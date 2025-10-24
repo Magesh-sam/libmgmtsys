@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": [
+        "."
+    ],
+    "java.project.referencedLibraries": [
+        "lib/postgresql-42.7.8.jar",
+        "/home/zoho/Downloads/postgresql-42.7.8.jar"
+    ]
+}

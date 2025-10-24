@@ -1,0 +1,33 @@
+package src.model;
+
+import java.time.LocalDate;
+
+public class Member {
+    private int memberId;
+    private LocalDate joinDate;
+
+    public Member() {
+    }
+
+    public Member(int memberId, LocalDate joinDate) {
+        this.memberId = memberId;
+        this.joinDate = joinDate;
+    }
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
+    }
+
+    public LocalDate getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(LocalDate joinDate) {
+        this.joinDate = joinDate;
+    }
+
+}
