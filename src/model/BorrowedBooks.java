@@ -8,7 +8,7 @@ public class BorrowedBooks {
     private int copyId;
     private LocalDate borrowDate;
     private LocalDate dueDate;
-    private LocalDate returDate;
+    private LocalDate returnDate;
 
     public int getborrowedId() {
         return borrowedId;
@@ -50,12 +50,12 @@ public class BorrowedBooks {
         this.dueDate = dueDate;
     }
 
-    public LocalDate getReturDate() {
-        return returDate;
+    public LocalDate getReturnDate() {
+        return returnDate;
     }
 
-    public void setReturDate(LocalDate returDate) {
-        this.returDate = returDate;
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
     }
 
 }

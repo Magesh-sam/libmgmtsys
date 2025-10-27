@@ -12,14 +12,16 @@ public class AppUser {
     private UserRole role;
     private long phone;
     private String address;
+    private String password;
 
-    public AppUser(int userId, String name, String email, UserRole role, long phone, String address) {
+    public AppUser(int userId, String name, String email, UserRole role, long phone, String address, String password) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.role = role;
         this.phone = phone;
         this.address = address;
+        this.password = password;
     }
 
     public AppUser(String name, String email, UserRole role, long phone, String address) {
@@ -80,5 +82,15 @@ public class AppUser {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    
 
 }
