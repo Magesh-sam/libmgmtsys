@@ -1,5 +1,6 @@
 package src.model.dao;
 
+import src.interfaces.IUserRoleDAO;
 import src.model.pojo.UserRole;
 import src.utils.DBConfig;
 
@@ -9,8 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserRoleDAO {
+public class UserRoleDAO implements IUserRoleDAO {
+    
 
+    @Override
     public int addUserRole(UserRole role) throws SQLException {
         String sql = "INSERT INTO userrole (name) VALUES (?) ";
         try (Connection conn = DBConfig.getConnection();
@@ -29,6 +32,7 @@ public class UserRoleDAO {
         }
     }
 
+    @Override
     public UserRole getUserRoleById(int roleId) throws SQLException {
         String sql = "SELECT role_id, name FROM userrole WHERE role_id = ?";
 
@@ -47,6 +51,7 @@ public class UserRoleDAO {
         }
     }
 
+    @Override
     public UserRole getUserRoleByName(String roleName) throws SQLException {
         String sql = "SELECT role_id, name FROM userrole WHERE name = ?";
 
@@ -64,6 +69,7 @@ public class UserRoleDAO {
         }
     }
 
+    @Override
     public List<UserRole> getAllUserRoles() throws SQLException {
         String sql = "SELECT role_id, name FROM userrole";
         List<UserRole> roles = new java.util.ArrayList<>();
@@ -79,6 +85,7 @@ public class UserRoleDAO {
         return roles;
     }
 
+    @Override
     public boolean updateUserRole(UserRole role) throws SQLException {
         String sql = "UPDATE userrole SET name = ? WHERE role_id = ?";
 
@@ -93,6 +100,7 @@ public class UserRoleDAO {
         }
     }
 
+    @Override
     public boolean deleteUserRole(int roleId) throws SQLException {
         String sql = "DELETE FROM userrole WHERE role_id = ?";
 
