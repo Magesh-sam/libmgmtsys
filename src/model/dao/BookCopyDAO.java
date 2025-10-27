@@ -8,12 +8,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.interfaces.IBookCopyDAO;
+import src.interfaces.IBookCopy;
 import src.model.pojo.BookCopy;
 import src.model.pojo.BookCopy.BookStatus;
 import src.utils.DBConfig;
 
-public class BookCopyDAO implements IBookCopyDAO {
+public class BookCopyDAO implements IBookCopy  {
     // Create a new book copy
     @Override
     public int createBookCopy(BookCopy bookCopy) throws SQLException {

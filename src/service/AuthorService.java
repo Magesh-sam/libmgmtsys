@@ -3,12 +3,13 @@ package src.service;
 import java.sql.SQLException;
 import java.util.Objects;
 
+import src.interfaces.IAuthor;
 import src.model.dao.AuthorDAO;
 import src.model.pojo.Author;
 import src.utils.Validation;
 
 public class AuthorService {
-    private final AuthorDAO authorDAO;
+    private final IAuthor authorDAO;
 
     public AuthorService() {
         this.authorDAO = new AuthorDAO();

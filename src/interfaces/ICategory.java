@@ -5,7 +5,7 @@ import java.util.List;
 
 import src.model.pojo.Category;
 
-public interface ICategoryDAO {
+public interface ICategory {
 
     // Create a new category
     int createCategory(Category category) throws SQLException;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import src.model.pojo.Book;
 
-public interface IBookDAO {
+public interface IBook {
 
     // Create a new book
     int createBook(Book book) throws SQLException;
@@ -17,7 +17,9 @@ public interface IBookDAO {
     List<Book> getAllBooks() throws SQLException;
 
     // Search books by title
-    List<Book> searchBooksByTitle(String searchTerm) throws SQLException;
+    Book getBookByTitle(String searchTerm) throws SQLException;
+
+    List<Book> getBooksByTitle(String searchTerm) throws SQLException;
 
     List<Book> getBooksByAuthorName(String authorName) throws SQLException;
 
@@ -32,5 +34,9 @@ public interface IBookDAO {
 
     // Delete a book
     boolean deleteBook(int bookId) throws SQLException;
+
+    List<Book> getBooksByCategory(String category) throws SQLException;
+
+    List<Book> getBooksByPublisher(String publisher) throws SQLException;
 
 }

@@ -8,11 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.interfaces.IPublisherDAO;
+import src.interfaces.IPublisher;
 import src.model.pojo.Publisher;
 import src.utils.DBConfig;
 
-public class PublisherDAO implements IPublisherDAO {
+public class PublisherDAO implements IPublisher  {
     @Override
     public int createPublisher(Publisher publisher) throws SQLException {
         String sql = "INSERT INTO publisher (name, address) VALUES (?, ?)";

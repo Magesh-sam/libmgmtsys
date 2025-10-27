@@ -8,11 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.interfaces.ICategoryDAO;
+import src.interfaces.ICategory;
 import src.model.pojo.Category;
 import src.utils.DBConfig;
 
-public class CategoryDAO implements ICategoryDAO {
+public class CategoryDAO implements ICategory  {
     // Create a new category
     @Override
     public int createCategory(Category category) throws SQLException {

@@ -6,7 +6,7 @@ import java.util.List;
 import src.model.pojo.BookCopy;
 import src.model.pojo.BookCopy.BookStatus;
 
-public interface IBookCopyDAO {
+public interface IBookCopy {
 
     // Create a new book copy
     int createBookCopy(BookCopy bookCopy) throws SQLException;

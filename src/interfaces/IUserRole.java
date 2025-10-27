@@ -5,7 +5,7 @@ import java.util.List;
 
 import src.model.pojo.UserRole;
 
-public interface IUserRoleDAO {
+public interface IUserRole {
 
     int addUserRole(UserRole role) throws SQLException;
 

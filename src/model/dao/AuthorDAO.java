@@ -8,11 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.interfaces.IAuthorDAO;
+import src.interfaces.IAuthor;
 import src.model.pojo.Author;
 import src.utils.DBConfig;
 
-public class AuthorDAO implements IAuthorDAO {
+public class AuthorDAO implements IAuthor  {
     // Create a new author
     @Override
     public int createAuthor(Author author) throws SQLException {

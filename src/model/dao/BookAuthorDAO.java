@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.interfaces.IBookAuthorDAO;
+import src.interfaces.IBookAuthor;
 import src.model.pojo.BookAuthor;
 import src.utils.DBConfig;
 
-public class BookAuthorDAO implements IBookAuthorDAO {
+public class BookAuthorDAO implements IBookAuthor  {
     @Override
     public void addBookAuthor(BookAuthor bookAuthor) throws SQLException {
         String sql = "INSERT INTO book_author (book_id, author_id) VALUES (?, ?)";

@@ -4,7 +4,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import src.interfaces.IUserRoleDAO;
+import src.interfaces.IAppUser;
+import src.interfaces.ILibrarian;
+import src.interfaces.IMember;
+import src.interfaces.IUserRole;
 import src.model.dao.AppUserDAO;
 import src.model.dao.LibrarianDAO;
 import src.model.dao.MemberDAO;
@@ -16,8 +19,8 @@ import src.model.pojo.UserRole;
 import src.utils.Validation;
 
 public class AppUserService {
-    private final AppUserDAO appUserDAO;
-    private final IUserRoleDAO roleDAO;
+    private final IAppUser appUserDAO;
+    private final IUserRole roleDAO;
 
     public AppUserService() {
         this.appUserDAO = new AppUserDAO();
@@ -104,7 +107,7 @@ public class AppUserService {
 
     // private helper methods
 
-    private void validateUser(AppUser user) throws SQLException {
+    private void validateUser(AppUser user) {
         Validation.requireNonEmpty(user.getName(), "Name");
         Validation.requireNonEmpty(user.getEmail(), "Email");
         if (!Validation.isValidEmail(user.getEmail())) {
@@ -125,7 +128,7 @@ public class AppUserService {
         Librarian l = new Librarian();
         l.setLibrarianId(userId);
         l.setHireDate(LocalDate.now());
-        LibrarianDAO librarianDAO = new LibrarianDAO();
+        ILibrarian librarianDAO = new LibrarianDAO();
         librarianDAO.createLibrarian(l);
     }
 
@@ -133,7 +136,7 @@ public class AppUserService {
         Member m = new Member();
         m.setMemberId(userId);
         m.setJoinDate(LocalDate.now());
-        MemberDAO memberDAO = new MemberDAO();
+        IMember memberDAO = new MemberDAO();
         memberDAO.createMember(m);
     }
 

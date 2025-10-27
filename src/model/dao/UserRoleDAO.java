@@ -1,6 +1,6 @@
 package src.model.dao;
 
-import src.interfaces.IUserRoleDAO;
+import src.interfaces.IUserRole;
 import src.model.pojo.UserRole;
 import src.utils.DBConfig;
 
@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserRoleDAO implements IUserRoleDAO {
+public class UserRoleDAO implements IUserRole  {
     
 
     @Override

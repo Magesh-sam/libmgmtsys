@@ -9,11 +9,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.interfaces.ILibrarianDAO;
+import src.interfaces.ILibrarian;
 import src.model.pojo.Librarian;
 import src.utils.DBConfig;
 
-public class LibrarianDAO implements ILibrarianDAO {
+public class LibrarianDAO implements ILibrarian  {
     @Override
     public int createLibrarian(Librarian librarian) throws SQLException {
         String sql = "INSERT INTO librarian (hire_date) VALUES (?)";

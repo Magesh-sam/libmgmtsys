@@ -8,11 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.interfaces.IBookDAO;
+import src.interfaces.IBook;
 import src.model.pojo.Book;
 import src.utils.DBConfig;
 
-public class BookDAO implements IBookDAO {
+public class BookDAO implements IBook {
     // Create a new book
     @Override
     public int createBook(Book book) throws SQLException {
@@ -77,7 +77,26 @@ public class BookDAO implements IBookDAO {
 
     // Search books by title
     @Override
-    public List<Book> searchBooksByTitle(String searchTerm) throws SQLException {
+    public Book getBookByTitle(String searchTerm) throws SQLException {
+        String sql = "SELECT book_id, title, category_id, publisher_id FROM book WHERE LOWER(title) = LOWER(?)";
+
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, "%" + searchTerm + "%");
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToBook(rs);
+                }
+            }
+        }
+        return null;
+
+    }
+
+    @Override
+    public List<Book> getBooksByTitle(String searchTerm) throws SQLException {
         String sql = "SELECT book_id, title, category_id, publisher_id FROM book WHERE LOWER(title) LIKE LOWER(?)";
         List<Book> books = new ArrayList<>();
 
@@ -135,6 +154,26 @@ public class BookDAO implements IBookDAO {
         return books;
     }
 
+    @Override
+    public List<Book> getBooksByCategory(String category) throws SQLException {
+
+        String sql = "SELECT book_id, title, category_id, publisher_id FROM book join category c on book.category_id = c.category_id where LOWER(c.name) LIKE LOWER(?)";
+        List<Book> books = new ArrayList<>();
+
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, category);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(mapResultSetToBook(rs));
+                }
+            }
+        }
+        return books;
+    }
+
     // Get books by publisher
     @Override
     public List<Book> getBooksByPublisher(int publisherId) throws SQLException {
@@ -145,6 +184,25 @@ public class BookDAO implements IBookDAO {
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, publisherId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(mapResultSetToBook(rs));
+                }
+            }
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> getBooksByPublisher(String publisher) throws SQLException {
+        String sql = "SELECT book_id, title, category_id, publisher_id FROM book join publisher p on book.publisher_id = p.publisher_id where LOWER(p.name) LIKE LOWER(?)";
+        List<Book> books = new ArrayList<>();
+
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, publisher);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {

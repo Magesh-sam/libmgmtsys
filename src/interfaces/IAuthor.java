@@ -5,7 +5,7 @@ import java.util.List;
 
 import src.model.pojo.Author;
 
-public interface IAuthorDAO {
+public interface IAuthor {
 
     // Create a new author
     int createAuthor(Author author) throws SQLException;

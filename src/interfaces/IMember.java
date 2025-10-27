@@ -5,7 +5,7 @@ import java.util.List;
 
 import src.model.pojo.Member;
 
-public interface IMemberDAO {
+public interface IMember {
 
     int createMember(Member member) throws SQLException;
 

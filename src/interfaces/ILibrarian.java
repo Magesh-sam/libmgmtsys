@@ -5,7 +5,7 @@ import java.util.List;
 
 import src.model.pojo.Librarian;
 
-public interface ILibrarianDAO {
+public interface ILibrarian {
 
     int createLibrarian(Librarian librarian) throws SQLException;
 

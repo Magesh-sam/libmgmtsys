@@ -1,14 +1,16 @@
 package src.model.dao;
 
 import java.sql.*;
-import src.interfaces.IAppUserDAO;
+
+import src.interfaces.IAppUser;
 import src.model.pojo.AppUser;
 import src.utils.DBConfig;
 
-public class AppUserDAO implements IAppUserDAO {
+public class AppUserDAO implements IAppUser {
 
     // Create user (roleId must be present in user.getRoleId() and must exist in
     // userrole table)
+    @Override
     public int createUser(AppUser user) throws SQLException {
         String sql = "INSERT INTO app_user (name, email, password, role_id, phone, address) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConfig.getConnection()) {
@@ -41,6 +43,7 @@ public class AppUserDAO implements IAppUserDAO {
     }
 
     // Create user by role name (look up role_id first)
+    @Override
     public int createUser(AppUser user, String roleName) throws SQLException {
         String lookup = "SELECT role_id FROM userrole WHERE name = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -72,6 +75,7 @@ public class AppUserDAO implements IAppUserDAO {
     }
 
     // Get by email + password
+    @Override
     public AppUser getUserByEmailAndPassword(String email, String password) throws SQLException {
         String sql = """
                 SELECT u.user_id, u.name, u.email, u.password, u.phone, u.address, u.role_id,
@@ -95,6 +99,7 @@ public class AppUserDAO implements IAppUserDAO {
     }
 
     // Get by email only
+    @Override
     public AppUser getUserByEmail(String email) throws SQLException {
         String sql = """
                 SELECT u.user_id, u.name, u.email, u.password, u.phone, u.address, u.role_id,
@@ -115,6 +120,7 @@ public class AppUserDAO implements IAppUserDAO {
     }
 
     // Get by ID
+    @Override
     public AppUser getUserById(int userId) throws SQLException {
         String sql = """
                 SELECT u.user_id, u.name, u.email, u.password, u.phone, u.address, u.role_id,
@@ -135,6 +141,7 @@ public class AppUserDAO implements IAppUserDAO {
     }
 
     // Update user
+    @Override
     public boolean updateUser(AppUser user) throws SQLException {
         String sql = "UPDATE app_user SET name = ?, email = ?, password = ?, role_id = ?, phone = ?, address = ? WHERE user_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -152,6 +159,7 @@ public class AppUserDAO implements IAppUserDAO {
     }
 
     // Delete user
+    @Override
     public boolean deleteUser(int userId) throws SQLException {
         String sql = "DELETE FROM app_user WHERE user_id = ?";
         try (Connection conn = DBConfig.getConnection();

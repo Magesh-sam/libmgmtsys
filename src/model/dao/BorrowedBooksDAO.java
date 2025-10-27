@@ -10,11 +10,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.interfaces.IBorrowedBooksDAO;
+import src.interfaces.IBorrowedBooks;
 import src.model.pojo.BorrowedBooks;
 import src.utils.DBConfig;
 
-public class BorrowedBooksDAO implements IBorrowedBooksDAO {
+public class BorrowedBooksDAO implements IBorrowedBooks  {
     @Override
     public int createBorrowedBook(BorrowedBooks borrowed) throws SQLException {
         String sql = "INSERT INTO borrowed_book (member_id, copy_id, borrow_date, due_date, return_date) VALUES (?, ?, ?, ?, ?)";

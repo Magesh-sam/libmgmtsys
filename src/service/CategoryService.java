@@ -1,13 +1,15 @@
 package src.service;
 
+import java.sql.SQLException;
 import java.util.Objects;
 
+import src.interfaces.ICategory;
 import src.model.dao.CategoryDAO;
 import src.model.pojo.Category;
 import src.utils.Validation;
 
 public class CategoryService {
-    private final CategoryDAO categoryDAO;
+    private final ICategory categoryDAO;
 
     public CategoryService() {
         this.categoryDAO = new CategoryDAO();
@@ -47,14 +49,14 @@ public class CategoryService {
         categoryDAO.updateCategory(category);
     }
 
-    public void deleteCategory(int categoryId) throws Exception {
+    public void deleteCategory(int categoryId) throws SQLException {
         if (categoryId <= 0) {
             throw new IllegalArgumentException("Invalid Category ID");
         }
         categoryDAO.deleteCategory(categoryId);
     }
 
-    private void validateCategory(Category category) throws Exception {
+    private void validateCategory(Category category) {
         Validation.requireNonEmpty(category.getName(), "Category Name");
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import src.model.pojo.BorrowedBooks;
 
-public interface IBorrowedBooksDAO {
+public interface IBorrowedBooks {
 
     int createBorrowedBook(BorrowedBooks borrowed) throws SQLException;
 

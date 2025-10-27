@@ -9,11 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.interfaces.IFine;
 import src.model.pojo.Fine;
 import src.model.pojo.Fine.FineStatus;
 import src.utils.DBConfig;
 
-public class FineDAO {
+public class FineDAO implements IFine {
+    @Override
     public int createFine(Fine fine) throws SQLException {
         String sql = "INSERT INTO fine (borrowed_id, amount, issue_date, status) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConfig.getConnection();
@@ -33,6 +35,7 @@ public class FineDAO {
         }
     }
 
+    @Override
     public Fine getFineById(int fineId) throws SQLException {
         String sql = "SELECT fine_id, borrowed_id, amount, issue_date, status FROM fine WHERE fine_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -47,6 +50,7 @@ public class FineDAO {
         return null;
     }
 
+    @Override
     public List<Fine> getAllFines() throws SQLException {
         String sql = "SELECT fine_id, borrowed_id, amount, issue_date, status FROM fines";
         List<Fine> list = new ArrayList<>();
@@ -60,6 +64,7 @@ public class FineDAO {
         return list;
     }
 
+    @Override
     public boolean updateFineStatus(int fineId, FineStatus status) throws SQLException {
         String sql = "UPDATE fine SET status = ? WHERE fine_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -70,6 +75,7 @@ public class FineDAO {
         }
     }
 
+    @Override
     public boolean deleteFine(int fineId) throws SQLException {
         String sql = "DELETE FROM fines WHERE fine_id = ?";
         try (Connection conn = DBConfig.getConnection();

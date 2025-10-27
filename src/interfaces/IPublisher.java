@@ -5,7 +5,7 @@ import java.util.List;
 
 import src.model.pojo.Publisher;
 
-public interface IPublisherDAO {
+public interface IPublisher {
 
     int createPublisher(Publisher publisher) throws SQLException;
 
