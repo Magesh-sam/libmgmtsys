@@ -8,12 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.interfaces.IBookCopyDAO;
 import src.model.BookCopy;
 import src.model.BookCopy.BookStatus;
 import src.util.DBConfig;
 
-public class BookCopyDAO {
+public class BookCopyDAO implements IBookCopyDAO {
     // Create a new book copy
+    @Override
     public int createBookCopy(BookCopy bookCopy) throws SQLException {
         String sql = "INSERT INTO book_copy (book_id, status) VALUES (?, ?)";
 
@@ -36,6 +38,7 @@ public class BookCopyDAO {
     }
 
     // Read a book copy by ID
+    @Override
     public BookCopy getBookCopyById(int copyId) throws SQLException {
         String sql = "SELECT copy_id, book_id, status FROM book_copy WHERE copy_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -53,6 +56,7 @@ public class BookCopyDAO {
     }
 
     // Get all copies of a specific book
+    @Override
     public List<BookCopy> getBookCopiesByBookId(int bookId) throws SQLException {
         String sql = "SELECT copy_id, book_id, status FROM book_copy WHERE book_id = ?";
         List<BookCopy> copies = new ArrayList<>();
@@ -72,6 +76,7 @@ public class BookCopyDAO {
     }
 
     // Get available copies of a book
+    @Override
     public List<BookCopy> getAvailableCopiesByBookId(int bookId) throws SQLException {
         String sql = "SELECT copy_id, book_id, status FROM book_copy WHERE book_id = ? AND status = ?";
         List<BookCopy> copies = new ArrayList<>();
@@ -92,6 +97,7 @@ public class BookCopyDAO {
     }
 
     // Update book copy status
+    @Override
     public boolean updateBookCopyStatus(int copyId, BookStatus status) throws SQLException {
         String sql = "UPDATE book_copy SET status = ? WHERE copy_id = ?";
 
@@ -106,6 +112,7 @@ public class BookCopyDAO {
     }
 
     // Delete a book copy
+    @Override
     public boolean deleteBookCopy(int copyId) throws SQLException {
         String sql = "DELETE FROM book_copy WHERE copy_id = ?";
 
@@ -118,6 +125,7 @@ public class BookCopyDAO {
     }
 
     // Get total number of copies for a book
+    @Override
     public int getTotalCopiesCount(int bookId) throws SQLException {
         String sql = "SELECT COUNT(*) FROM book_copy WHERE book_id = ?";
 
@@ -136,6 +144,7 @@ public class BookCopyDAO {
     }
 
     // Get count of available copies for a book
+    @Override
     public int getAvailableCopiesCount(int bookId) throws SQLException {
         String sql = "SELECT COUNT(*) FROM book_copy WHERE book_id = ? AND status = ?";
 

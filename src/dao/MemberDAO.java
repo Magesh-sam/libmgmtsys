@@ -6,14 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.interfaces.IMemberDAO;
 import src.model.Member;
 import src.util.DBConfig;
 
-public class MemberDAO {
+public class MemberDAO implements IMemberDAO {
+    @Override
     public int createMember(Member member) throws SQLException {
         String sql = "INSERT INTO member (join_date) VALUES (?)";
         try (Connection conn = DBConfig.getConnection();
@@ -30,6 +31,7 @@ public class MemberDAO {
         }
     }
 
+    @Override
     public Member getMemberById(int memberId) throws SQLException {
         String sql = "SELECT member_id, join_date FROM member WHERE member_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -44,6 +46,7 @@ public class MemberDAO {
         return null;
     }
 
+    @Override
     public List<Member> getAllMembers() throws SQLException {
         String sql = "SELECT member_id, join_date FROM members";
         List<Member> list = new ArrayList<>();
@@ -57,6 +60,7 @@ public class MemberDAO {
         return list;
     }
 
+    @Override
     public boolean updateMember(Member member) throws SQLException {
         String sql = "UPDATE member SET join_date = ? WHERE member_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -67,6 +71,7 @@ public class MemberDAO {
         }
     }
 
+    @Override
     public boolean deleteMember(int memberId) throws SQLException {
         String sql = "DELETE FROM members WHERE member_id = ?";
         try (Connection conn = DBConfig.getConnection();

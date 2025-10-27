@@ -7,10 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.interfaces.IBookAuthorDAO;
 import src.model.BookAuthor;
 import src.util.DBConfig;
 
-public class BookAuthorDAO {
+public class BookAuthorDAO implements IBookAuthorDAO {
+    @Override
     public void addBookAuthor(BookAuthor bookAuthor) throws SQLException {
         String sql = "INSERT INTO book_author (book_id, author_id) VALUES (?, ?)";
         try (Connection conn = DBConfig.getConnection();
@@ -21,6 +23,7 @@ public class BookAuthorDAO {
         }
     }
 
+    @Override
     public List<BookAuthor> getAuthorsByBookId(int bookId) throws SQLException {
         String sql = "SELECT book_id, author_id FROM book_author WHERE book_id = ?";
         List<BookAuthor> list = new ArrayList<>();
@@ -39,6 +42,7 @@ public class BookAuthorDAO {
         return list;
     }
 
+    @Override
     public List<BookAuthor> getBooksByAuthorId(int authorId) throws SQLException {
         String sql = "SELECT book_id, author_id FROM book_authors WHERE author_id = ?";
         List<BookAuthor> list = new ArrayList<>();
@@ -57,6 +61,7 @@ public class BookAuthorDAO {
         return list;
     }
 
+    @Override
     public boolean deleteBookAuthor(int bookId, int authorId) throws SQLException {
         String sql = "DELETE FROM book_author WHERE book_id = ? AND author_id = ?";
         try (Connection conn = DBConfig.getConnection();

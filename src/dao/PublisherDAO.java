@@ -8,10 +8,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.interfaces.IPublisherDAO;
 import src.model.Publisher;
 import src.util.DBConfig;
 
-public class PublisherDAO {
+public class PublisherDAO implements IPublisherDAO {
+    @Override
     public int createPublisher(Publisher publisher) throws SQLException {
         String sql = "INSERT INTO publisher (name, address) VALUES (?, ?)";
         try (Connection conn = DBConfig.getConnection();
@@ -29,6 +31,7 @@ public class PublisherDAO {
         }
     }
 
+    @Override
     public Publisher getPublisherById(int publisherId) throws SQLException {
         String sql = "SELECT publisher_id, name, address FROM publisher WHERE publisher_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -43,6 +46,7 @@ public class PublisherDAO {
         return null;
     }
 
+    @Override
     public List<Publisher> getAllPublishers() throws SQLException {
         String sql = "SELECT publisher_id, name, address FROM publishers";
         List<Publisher> list = new ArrayList<>();
@@ -56,6 +60,7 @@ public class PublisherDAO {
         return list;
     }
 
+    @Override
     public boolean updatePublisher(Publisher publisher) throws SQLException {
         String sql = "UPDATE publisher SET name = ?, address = ? WHERE publisher_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -67,6 +72,7 @@ public class PublisherDAO {
         }
     }
 
+    @Override
     public boolean deletePublisher(int publisherId) throws SQLException {
         String sql = "DELETE FROM publisher WHERE publisher_id = ?";
         try (Connection conn = DBConfig.getConnection();

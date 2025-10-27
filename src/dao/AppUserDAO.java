@@ -6,11 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import src.interfaces.IAppUserDAO;
 import src.model.AppUser;
 import src.model.AppUser.UserRole;
 import src.util.DBConfig;
 
-public class AppUserDAO {
+public class AppUserDAO implements IAppUserDAO {
 
     public int createUser(AppUser user) throws SQLException {
         String sql = "INSERT INTO app_user (name, email, password, role, phone, address) VALUES (?, ?, ?, ?, ?, ?)";

@@ -8,11 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.interfaces.IBookDAO;
 import src.model.Book;
 import src.util.DBConfig;
 
-public class BookDAO {
+public class BookDAO implements IBookDAO {
     // Create a new book
+    @Override
     public int createBook(Book book) throws SQLException {
         String sql = "INSERT INTO book (title, category_id, publisher_id) VALUES (?, ?, ?)";
 
@@ -38,6 +40,7 @@ public class BookDAO {
     }
 
     // Read a book by ID
+    @Override
     public Book getBookById(int bookId) throws SQLException {
         String sql = "SELECT book_id, title, category_id, publisher_id FROM book WHERE book_id = ?";
 
@@ -56,6 +59,7 @@ public class BookDAO {
     }
 
     // Read all books
+    @Override
     public List<Book> getAllBooks() throws SQLException {
         String sql = "SELECT book_id, title, category_id, publisher_id FROM book";
         List<Book> books = new ArrayList<>();
@@ -72,6 +76,7 @@ public class BookDAO {
     }
 
     // Search books by title
+    @Override
     public List<Book> searchBooksByTitle(String searchTerm) throws SQLException {
         String sql = "SELECT book_id, title, category_id, publisher_id FROM book WHERE LOWER(title) LIKE LOWER(?)";
         List<Book> books = new ArrayList<>();
@@ -90,6 +95,7 @@ public class BookDAO {
         return books;
     }
 
+    @Override
     public List<Book> getBooksByAuthorName(String authorName) throws SQLException {
 
         String sql = "SELECT DISTINCT b.book_id, b.title, b.category_id, b.publisher_id FROM book b  JOIN book_author ba ON b.book_id = ba.book_id  JOIN author a ON ba.author_id = a.author_id  WHERE LOWER(a.name) LIKE LOWER(?)";
@@ -110,6 +116,7 @@ public class BookDAO {
     }
 
     // Get books by category
+    @Override
     public List<Book> getBooksByCategory(int categoryId) throws SQLException {
         String sql = "SELECT book_id, title, category_id, publisher_id FROM book WHERE category_id = ?";
         List<Book> books = new ArrayList<>();
@@ -129,6 +136,7 @@ public class BookDAO {
     }
 
     // Get books by publisher
+    @Override
     public List<Book> getBooksByPublisher(int publisherId) throws SQLException {
         String sql = "SELECT book_id, title, category_id, publisher_id FROM book WHERE publisher_id = ?";
         List<Book> books = new ArrayList<>();
@@ -148,6 +156,7 @@ public class BookDAO {
     }
 
     // Update a book
+    @Override
     public boolean updateBook(Book book) throws SQLException {
         String sql = "UPDATE book SET title = ?, category_id = ?, publisher_id = ? WHERE book_id = ?";
 
@@ -164,6 +173,7 @@ public class BookDAO {
     }
 
     // Delete a book
+    @Override
     public boolean deleteBook(int bookId) throws SQLException {
         String sql = "DELETE FROM book WHERE book_id = ?";
 

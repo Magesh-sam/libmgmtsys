@@ -10,10 +10,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.interfaces.IBorrowedBooksDAO;
 import src.model.BorrowedBooks;
 import src.util.DBConfig;
 
-public class BorrowedBooksDAO {
+public class BorrowedBooksDAO implements IBorrowedBooksDAO {
+    @Override
     public int createBorrowedBook(BorrowedBooks borrowed) throws SQLException {
         String sql = "INSERT INTO borrowed_book (member_id, copy_id, borrow_date, due_date, return_date) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConfig.getConnection();
@@ -34,6 +36,7 @@ public class BorrowedBooksDAO {
         }
     }
 
+    @Override
     public BorrowedBooks getBorrowedBookById(int borrowedId) throws SQLException {
         String sql = "SELECT borrowed_id, member_id, copy_id, borrow_date, due_date, return_date FROM borrowed_book WHERE borrowed_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -48,6 +51,7 @@ public class BorrowedBooksDAO {
         return null;
     }
 
+    @Override
     public List<BorrowedBooks> getAllBorrowedBooks() throws SQLException {
         String sql = "SELECT borrowed_id, member_id, copy_id, borrow_date, due_date, return_date FROM borrowed_book";
         List<BorrowedBooks> list = new ArrayList<>();
@@ -61,6 +65,7 @@ public class BorrowedBooksDAO {
         return list;
     }
 
+    @Override
     public boolean updateReturnDate(int borrowedId, LocalDate returDate) throws SQLException {
         String sql = "UPDATE borrowed_book SET return_date = ? WHERE borrowed_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -71,6 +76,7 @@ public class BorrowedBooksDAO {
         }
     }
 
+    @Override
     public boolean deleteBorrowedBook(int borrowedId) throws SQLException {
         String sql = "DELETE FROM borrowed_books WHERE borrowed_id = ?";
         try (Connection conn = DBConfig.getConnection();

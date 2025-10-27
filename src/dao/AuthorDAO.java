@@ -8,11 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.interfaces.IAuthorDAO;
 import src.model.Author;
 import src.util.DBConfig;
 
-public class AuthorDAO {
+public class AuthorDAO implements IAuthorDAO {
     // Create a new author
+    @Override
     public int createAuthor(Author author) throws SQLException {
         String sql = "INSERT INTO author (name, bio) VALUES (?, ?)";
 
@@ -35,6 +37,7 @@ public class AuthorDAO {
     }
 
     // Read author by ID
+    @Override
     public Author getAuthorById(int authorId) throws SQLException {
         String sql = "SELECT author_id, name, bio FROM author WHERE author_id = ?";
   
@@ -53,6 +56,7 @@ public class AuthorDAO {
     }
 
     // Get all authors
+    @Override
     public List<Author> getAllAuthors() throws SQLException {
         String sql = "SELECT author_id, name, bio FROM authors";
         List<Author> authors = new ArrayList<>();
@@ -69,6 +73,7 @@ public class AuthorDAO {
     }
 
     // Search authors by name
+    @Override
     public List<Author> searchAuthorsByName(String searchTerm) throws SQLException {
         String sql = "SELECT author_id, name, bio FROM authors WHERE LOWER(name) LIKE LOWER(?)";
         List<Author> authors = new ArrayList<>();
@@ -88,6 +93,7 @@ public class AuthorDAO {
     }
 
     // Update author
+    @Override
     public boolean updateAuthor(Author author) throws SQLException {
         String sql = "UPDATE author SET name = ?, bio = ? WHERE author_id = ?";
 
@@ -103,6 +109,7 @@ public class AuthorDAO {
     }
 
     // Delete author
+    @Override
     public boolean deleteAuthor(int authorId) throws SQLException {
         String sql = "DELETE FROM author WHERE author_id = ?";
 

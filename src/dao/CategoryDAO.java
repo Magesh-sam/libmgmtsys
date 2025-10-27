@@ -8,11 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.interfaces.ICategoryDAO;
 import src.model.Category;
 import src.util.DBConfig;
 
-public class CategoryDAO {
+public class CategoryDAO implements ICategoryDAO {
     // Create a new category
+    @Override
     public int createCategory(Category category) throws SQLException {
         String sql = "INSERT INTO category (name, description) VALUES (?, ?)";
 
@@ -35,6 +37,7 @@ public class CategoryDAO {
     }
 
     // Read category by ID
+    @Override
     public Category getCategoryById(int categoryId) throws SQLException {
         String sql = "SELECT category_id, name, description FROM category WHERE category_id = ?";
 
@@ -53,6 +56,7 @@ public class CategoryDAO {
     }
 
     // Get all categories
+    @Override
     public List<Category> getAllCategories() throws SQLException {
         String sql = "SELECT category_id, name, description FROM categories";
         List<Category> categories = new ArrayList<>();
@@ -69,6 +73,7 @@ public class CategoryDAO {
     }
 
     // Update category
+    @Override
     public boolean updateCategory(Category category) throws SQLException {
         String sql = "UPDATE category SET name = ?, description = ? WHERE category_id = ?";
 
@@ -84,6 +89,7 @@ public class CategoryDAO {
     }
 
     // Delete category
+    @Override
     public boolean deleteCategory(int categoryId) throws SQLException {
         String sql = "DELETE FROM category WHERE category_id = ?";
 

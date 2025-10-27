@@ -6,14 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.interfaces.ILibrarianDAO;
 import src.model.Librarian;
 import src.util.DBConfig;
 
-public class LibrarianDAO {
+public class LibrarianDAO implements ILibrarianDAO {
+    @Override
     public int createLibrarian(Librarian librarian) throws SQLException {
         String sql = "INSERT INTO librarian (hire_date) VALUES (?)";
         try (Connection conn = DBConfig.getConnection();
@@ -30,6 +31,7 @@ public class LibrarianDAO {
         }
     }
 
+    @Override
     public Librarian getLibrarianById(int librarianId) throws SQLException {
         String sql = "SELECT librarian_id, hire_date FROM librarian WHERE librarian_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -44,6 +46,7 @@ public class LibrarianDAO {
         return null;
     }
 
+    @Override
     public List<Librarian> getAllLibrarians() throws SQLException {
         String sql = "SELECT librarian_id, hire_date FROM librarians";
         List<Librarian> list = new ArrayList<>();
@@ -57,6 +60,7 @@ public class LibrarianDAO {
         return list;
     }
 
+    @Override
     public boolean updateLibrarian(Librarian librarian) throws SQLException {
         String sql = "UPDATE librarian SET hire_date = ? WHERE librarian_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -67,6 +71,7 @@ public class LibrarianDAO {
         }
     }
 
+    @Override
     public boolean deleteLibrarian(int librarianId) throws SQLException {
         String sql = "DELETE FROM librarians WHERE librarian_id = ?";
         try (Connection conn = DBConfig.getConnection();
