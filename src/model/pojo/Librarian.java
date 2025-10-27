@@ -2,7 +2,7 @@ package src.model.pojo;
 
 import java.time.LocalDate;
 
-public class Librarian {
+public class Librarian extends AppUser {
     private int librarianId;
     private LocalDate hireDate;
 

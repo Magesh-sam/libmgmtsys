@@ -40,7 +40,7 @@ public class AuthorDAO implements IAuthorDAO {
     @Override
     public Author getAuthorById(int authorId) throws SQLException {
         String sql = "SELECT author_id, name, bio FROM author WHERE author_id = ?";
-  
+
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -70,6 +70,24 @@ public class AuthorDAO implements IAuthorDAO {
             }
         }
         return authors;
+    }
+
+    @Override
+    public Author getAuthorByName(String authorName) throws SQLException {
+        String sql = "SELECT author_id, name, bio FROM authors WHERE LOWER(name) = ?";
+
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, authorName);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToAuthor(rs);
+                }
+                return null;
+            }
+        }
     }
 
     // Search authors by name

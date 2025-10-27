@@ -16,6 +16,8 @@ public interface IAuthorDAO {
     // Get all authors
     List<Author> getAllAuthors() throws SQLException;
 
+    Author getAuthorByName(String authorName) throws SQLException;
+
     // Search authors by name
     List<Author> searchAuthorsByName(String searchTerm) throws SQLException;
 

@@ -7,39 +7,63 @@ import java.util.Objects;
 import src.model.dao.AppUserDAO;
 import src.model.dao.LibrarianDAO;
 import src.model.dao.MemberDAO;
+import src.model.dao.UserRoleDAO;
 import src.model.pojo.AppUser;
 import src.model.pojo.Librarian;
 import src.model.pojo.Member;
-import src.model.pojo.AppUser.UserRole;
+import src.model.pojo.UserRole;
 import src.utils.Validation;
 
 public class AppUserService {
     private final AppUserDAO appUserDAO;
+    private final UserRoleDAO roleDAO;
 
-    public AppUserService(AppUserDAO appUserDAO) {
+    public AppUserService() {
         this.appUserDAO = new AppUserDAO();
-
+        this.roleDAO = new UserRoleDAO();
     }
 
-    // register a user
-    public int register(AppUser user) throws SQLException, IllegalArgumentException {
+    public int registerUser(AppUser user, int roleId) throws SQLException {
+        Objects.requireNonNull(user, "User cannot be null");
+
         validateUser(user);
+
         AppUser existingAppUser = appUserDAO.getUserByEmail(user.getEmail());
         if (existingAppUser != null) {
             throw new IllegalArgumentException("Email already registered");
         }
-        int userId = appUserDAO.createUser(user);
-        if (userId > 0 && user.getRole() == UserRole.member) {
-            createMember(userId);
-        } else if (userId > 0 && user.getRole() == UserRole.librarian) {
-            createLibrarian(userId);
 
+        UserRole role = roleDAO.getUserRoleById(roleId);
+        if (role == null) {
+            throw new IllegalArgumentException("Role with id " + roleId + " does not exist.");
         }
+
+        user.setRoleId(roleId);
+        int userId = appUserDAO.createUser(user);
+
+        if (userId > 0) {
+            String roleName = role.getName();
+            if ("member".equalsIgnoreCase(roleName)) {
+                createMember(userId);
+            } else if ("librarian".equalsIgnoreCase(roleName)) {
+                createLibrarian(userId);
+            }
+        }
+
         return userId;
     }
 
+    public int registerUser(AppUser user, String roleName) throws SQLException {
+        Objects.requireNonNull(roleName, "Role name cannot be null");
+        UserRole role = roleDAO.getUserRoleByName(roleName);
+        if (role == null) {
+            throw new IllegalArgumentException("Role with name '" + roleName + "' does not exist.");
+        }
+        return registerUser(user, role.getRoleId());
+    }
+
     // user login with email and password
-    public AppUser login(String email, String password) throws SQLException {
+    public AppUser loginUser(String email, String password) throws SQLException {
         Validation.requireNonEmpty(email, "Email");
         Validation.requireNonEmpty(password, "Password");
         Validation.requireMinLength(password, 8, "Password");
@@ -47,35 +71,43 @@ public class AppUserService {
     }
 
     // update user
-    public boolean update(AppUser user) throws SQLException {
+    public boolean updateUser(AppUser user) throws SQLException {
+        Objects.requireNonNull(user, "User cannot be null");
         validateUser(user);
+
         AppUser existingAppUser = appUserDAO.getUserByEmail(user.getEmail());
-        if (existingAppUser != null) {
-            throw new IllegalArgumentException("User does not exist.");
+        // if email belongs to another user -> conflict
+        if (existingAppUser != null && existingAppUser.getUserId() != user.getUserId()) {
+            throw new IllegalArgumentException("Email already registered by another user.");
         }
+
+        // if roleId is provided, validate it exists
+        if (user.getRoleId() > 0) {
+            UserRole role = roleDAO.getUserRoleById(user.getRoleId());
+            if (role == null) {
+                throw new IllegalArgumentException("Role with id " + user.getRoleId() + " does not exist.");
+            }
+        }
+
         return appUserDAO.updateUser(user);
     }
 
     // delete user
-
-    public boolean delete(int userId) throws SQLException {
+    public boolean deleteUser(int userId) throws SQLException {
         AppUser existingAppUser = appUserDAO.getUserById(userId);
         if (existingAppUser == null) {
             throw new IllegalArgumentException("User does not exist.");
         }
         return appUserDAO.deleteUser(userId);
-
     }
 
     // private helper methods
 
     private void validateUser(AppUser user) throws SQLException, IllegalArgumentException {
-        Objects.requireNonNull(user, "User cannot be null");
         Validation.requireNonEmpty(user.getName(), "Name");
         Validation.requireNonEmpty(user.getEmail(), "Email");
         Validation.requireNonEmpty(user.getPassword(), "Password");
         Validation.requireMinLength(user.getPassword(), 8, "Password");
-
     }
 
     private void createLibrarian(int userId) throws SQLException {
