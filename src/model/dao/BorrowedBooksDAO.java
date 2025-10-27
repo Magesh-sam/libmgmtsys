@@ -1,4 +1,4 @@
-package src.dao;
+package src.model.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.interfaces.IBorrowedBooksDAO;
-import src.model.BorrowedBooks;
-import src.util.DBConfig;
+import src.model.pojo.BorrowedBooks;
+import src.utils.DBConfig;
 
 public class BorrowedBooksDAO implements IBorrowedBooksDAO {
     @Override

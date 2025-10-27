@@ -3,7 +3,7 @@ package src.interfaces;
 import java.sql.SQLException;
 import java.util.List;
 
-import src.model.Librarian;
+import src.model.pojo.Librarian;
 
 public interface ILibrarianDAO {
 

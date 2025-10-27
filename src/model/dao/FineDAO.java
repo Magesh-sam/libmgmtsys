@@ -1,4 +1,4 @@
-package src.dao;
+package src.model.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -9,9 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.model.Fine;
-import src.model.Fine.FineStatus;
-import src.util.DBConfig;
+import src.model.pojo.Fine;
+import src.model.pojo.Fine.FineStatus;
+import src.utils.DBConfig;
 
 public class FineDAO {
     public int createFine(Fine fine) throws SQLException {

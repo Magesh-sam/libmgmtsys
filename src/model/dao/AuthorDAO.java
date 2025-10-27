@@ -1,4 +1,4 @@
-package src.dao;
+package src.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.interfaces.IAuthorDAO;
-import src.model.Author;
-import src.util.DBConfig;
+import src.model.pojo.Author;
+import src.utils.DBConfig;
 
 public class AuthorDAO implements IAuthorDAO {
     // Create a new author

@@ -3,7 +3,7 @@ package src.interfaces;
 import java.sql.SQLException;
 import java.util.List;
 
-import src.model.Publisher;
+import src.model.pojo.Publisher;
 
 public interface IPublisherDAO {
 

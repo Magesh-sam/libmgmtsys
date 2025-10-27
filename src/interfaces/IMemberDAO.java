@@ -3,7 +3,7 @@ package src.interfaces;
 import java.sql.SQLException;
 import java.util.List;
 
-import src.model.Member;
+import src.model.pojo.Member;
 
 public interface IMemberDAO {
 

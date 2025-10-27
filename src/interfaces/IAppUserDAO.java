@@ -2,7 +2,7 @@ package src.interfaces;
 
 import java.sql.SQLException;
 
-import src.model.AppUser;
+import src.model.pojo.AppUser;
 
 public interface IAppUserDAO {
     int createUser(AppUser user) throws SQLException;

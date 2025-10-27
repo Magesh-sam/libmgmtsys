@@ -1,4 +1,4 @@
-package src.model;
+package src.model.pojo;
 
 import java.time.LocalDate;
 
@@ -7,6 +7,10 @@ public class Member {
     private LocalDate joinDate;
 
     public Member() {
+    }
+
+    public Member(int memberId) {
+        this.memberId = memberId;
     }
 
     public Member(int memberId, LocalDate joinDate) {

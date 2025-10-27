@@ -1,4 +1,4 @@
-package src.dao;
+package src.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import src.interfaces.IAppUserDAO;
-import src.model.AppUser;
-import src.model.AppUser.UserRole;
-import src.util.DBConfig;
+import src.model.pojo.AppUser;
+import src.model.pojo.AppUser.UserRole;
+import src.utils.DBConfig;
 
 public class AppUserDAO implements IAppUserDAO {
 

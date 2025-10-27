@@ -3,8 +3,8 @@ package src.interfaces;
 import java.sql.SQLException;
 import java.util.List;
 
-import src.model.BookCopy;
-import src.model.BookCopy.BookStatus;
+import src.model.pojo.BookCopy;
+import src.model.pojo.BookCopy.BookStatus;
 
 public interface IBookCopyDAO {
 

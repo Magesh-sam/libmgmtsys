@@ -3,7 +3,7 @@ package src.interfaces;
 import java.sql.SQLException;
 import java.util.List;
 
-import src.model.Category;
+import src.model.pojo.Category;
 
 public interface ICategoryDAO {
 

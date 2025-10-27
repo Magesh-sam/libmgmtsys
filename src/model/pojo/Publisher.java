@@ -1,4 +1,4 @@
-package src.model;
+package src.model.pojo;
 
 public class Publisher {
     private int publisherId;

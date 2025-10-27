@@ -1,4 +1,4 @@
-package src.dao;
+package src.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.interfaces.IBookAuthorDAO;
-import src.model.BookAuthor;
-import src.util.DBConfig;
+import src.model.pojo.BookAuthor;
+import src.utils.DBConfig;
 
 public class BookAuthorDAO implements IBookAuthorDAO {
     @Override

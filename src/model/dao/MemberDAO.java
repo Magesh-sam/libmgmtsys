@@ -1,4 +1,4 @@
-package src.dao;
+package src.model.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.interfaces.IMemberDAO;
-import src.model.Member;
-import src.util.DBConfig;
+import src.model.pojo.Member;
+import src.utils.DBConfig;
 
 public class MemberDAO implements IMemberDAO {
     @Override

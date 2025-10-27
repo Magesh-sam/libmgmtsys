@@ -3,7 +3,7 @@ package src.interfaces;
 import java.sql.SQLException;
 import java.util.List;
 
-import src.model.Book;
+import src.model.pojo.Book;
 
 public interface IBookDAO {
 

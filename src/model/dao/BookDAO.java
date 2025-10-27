@@ -1,4 +1,4 @@
-package src.dao;
+package src.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.interfaces.IBookDAO;
-import src.model.Book;
-import src.util.DBConfig;
+import src.model.pojo.Book;
+import src.utils.DBConfig;
 
 public class BookDAO implements IBookDAO {
     // Create a new book

@@ -1,4 +1,4 @@
-package src.dao;
+package src.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.interfaces.ICategoryDAO;
-import src.model.Category;
-import src.util.DBConfig;
+import src.model.pojo.Category;
+import src.utils.DBConfig;
 
 public class CategoryDAO implements ICategoryDAO {
     // Create a new category
