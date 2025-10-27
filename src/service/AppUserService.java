@@ -21,8 +21,8 @@ public class AppUserService {
 
     }
 
-    // creating a user
-    public int createUser(AppUser user) throws SQLException, IllegalArgumentException {
+    // register a user
+    public int register(AppUser user) throws SQLException, IllegalArgumentException {
         validateUser(user);
         AppUser existingAppUser = appUserDAO.getUserByEmail(user.getEmail());
         if (existingAppUser != null) {
@@ -45,6 +45,29 @@ public class AppUserService {
         Validation.requireMinLength(password, 8, "Password");
         return appUserDAO.getUserByEmailAndPassword(email, password);
     }
+
+    // update user
+    public boolean update(AppUser user) throws SQLException {
+        validateUser(user);
+        AppUser existingAppUser = appUserDAO.getUserByEmail(user.getEmail());
+        if (existingAppUser != null) {
+            throw new IllegalArgumentException("User does not exist.");
+        }
+        return appUserDAO.updateUser(user);
+    }
+
+    // delete user
+
+    public boolean delete(int userId) throws SQLException {
+        AppUser existingAppUser = appUserDAO.getUserById(userId);
+        if (existingAppUser == null) {
+            throw new IllegalArgumentException("User does not exist.");
+        }
+        return appUserDAO.deleteUser(userId);
+
+    }
+
+    // private helper methods
 
     private void validateUser(AppUser user) throws SQLException, IllegalArgumentException {
         Objects.requireNonNull(user, "User cannot be null");
