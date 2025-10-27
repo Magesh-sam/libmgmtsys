@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import src.interfaces.IUserRoleDAO;
 import src.model.dao.AppUserDAO;
 import src.model.dao.LibrarianDAO;
 import src.model.dao.MemberDAO;
@@ -16,7 +17,7 @@ import src.utils.Validation;
 
 public class AppUserService {
     private final AppUserDAO appUserDAO;
-    private final UserRoleDAO roleDAO;
+    private final IUserRoleDAO roleDAO;
 
     public AppUserService() {
         this.appUserDAO = new AppUserDAO();
