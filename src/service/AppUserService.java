@@ -103,11 +103,21 @@ public class AppUserService {
 
     // private helper methods
 
-    private void validateUser(AppUser user) throws SQLException, IllegalArgumentException {
+    private void validateUser(AppUser user) throws SQLException {
         Validation.requireNonEmpty(user.getName(), "Name");
         Validation.requireNonEmpty(user.getEmail(), "Email");
+        if (!Validation.isValidEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Invalid email format.");
+        }
         Validation.requireNonEmpty(user.getPassword(), "Password");
         Validation.requireMinLength(user.getPassword(), 8, "Password");
+        if (user.getPhone() > 0 && !Validation.isValidMobileNumber(String.valueOf(user.getPhone()))) {
+            throw new IllegalArgumentException("Phone number must be positive.");
+        }
+        if (user.getRoleId() <= 0) {
+            throw new IllegalArgumentException("Role ID must be positive.");
+        }
+
     }
 
     private void createLibrarian(int userId) throws SQLException {
