@@ -8,8 +8,6 @@ import src.utils.DBConfig;
 
 public class AppUserDAO implements IAppUser {
 
-    // Create user (roleId must be present in user.getRoleId() and must exist in
-    // userrole table)
     @Override
     public int createUser(AppUser user) throws SQLException {
         String sql = "INSERT INTO app_user (name, email, password, role_id, phone, address) VALUES (?, ?, ?, ?, ?, ?)";

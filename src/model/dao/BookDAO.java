@@ -250,8 +250,7 @@ public class BookDAO implements IBook {
         book.setTitle(rs.getString("title"));
         book.setCategoryId(rs.getInt("category_id"));
         book.setPublisherId(rs.getInt("publisher_id"));
-        // publication_year, language and price are not fetched because the DB schema
-        // doesn't have those columns. Leave model defaults in place.
+        book.setLanguage(rs.getString("language"));
         return book;
     }
 }
