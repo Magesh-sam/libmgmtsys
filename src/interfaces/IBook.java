@@ -19,10 +19,6 @@ public interface IBook {
     // Search books by title
     Book getBookByTitle(String searchTerm) throws SQLException;
 
-    List<Book> getBooksByTitle(String searchTerm) throws SQLException;
-
-    List<Book> getBooksByAuthorName(String authorName) throws SQLException;
-
     // Get books by category
     List<Book> getBooksByCategory(int categoryId) throws SQLException;
 
@@ -35,8 +31,8 @@ public interface IBook {
     // Delete a book
     boolean deleteBook(int bookId) throws SQLException;
 
-    List<Book> getBooksByCategory(String category) throws SQLException;
+    List<Book> getBooksByTitle(String searchTerm) throws SQLException;
 
-    List<Book> getBooksByPublisher(String publisher) throws SQLException;
+    List<Book> getBooksByAuthorName(String authorName) throws SQLException;
 
 }
