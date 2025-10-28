@@ -1,20 +1,13 @@
 package src.service;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Objects;
 
 import src.interfaces.IAppUser;
-import src.interfaces.ILibrarian;
-import src.interfaces.IMember;
 import src.interfaces.IUserRole;
 import src.model.dao.AppUserDAO;
-import src.model.dao.LibrarianDAO;
-import src.model.dao.MemberDAO;
 import src.model.dao.UserRoleDAO;
 import src.model.pojo.AppUser;
-import src.model.pojo.Librarian;
-import src.model.pojo.Member;
 import src.model.pojo.UserRole;
 import src.utils.Validation;
 
@@ -44,15 +37,6 @@ public class AppUserService {
 
         user.setRoleId(roleId);
         int userId = appUserDAO.createUser(user);
-
-        if (userId > 0) {
-            String roleName = role.getName();
-            if ("member".equalsIgnoreCase(roleName)) {
-                createMember(userId);
-            } else if ("librarian".equalsIgnoreCase(roleName)) {
-                createLibrarian(userId);
-            }
-        }
 
         return userId;
     }
@@ -122,22 +106,6 @@ public class AppUserService {
             throw new IllegalArgumentException("Role ID must be positive.");
         }
 
-    }
-
-    private void createLibrarian(int userId) throws SQLException {
-        Librarian l = new Librarian();
-        l.setLibrarianId(userId);
-        l.setHireDate(LocalDate.now());
-        ILibrarian librarianDAO = new LibrarianDAO();
-        librarianDAO.createLibrarian(l);
-    }
-
-    private void createMember(int userId) throws SQLException {
-        Member m = new Member();
-        m.setMemberId(userId);
-        m.setJoinDate(LocalDate.now());
-        IMember memberDAO = new MemberDAO();
-        memberDAO.createMember(m);
     }
 
 }
