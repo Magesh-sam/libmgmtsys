@@ -13,13 +13,14 @@ import src.interfaces.ILibrarian;
 import src.model.pojo.Librarian;
 import src.utils.DBConfig;
 
-public class LibrarianDAO implements ILibrarian  {
+public class LibrarianDAO implements ILibrarian {
     @Override
-    public int createLibrarian(Librarian librarian) throws SQLException {
-        String sql = "INSERT INTO librarian (hire_date) VALUES (?)";
+    public int createLibrarian(int userId, Librarian librarian) throws SQLException {
+        String sql = "INSERT INTO librarian (librarian_id,hire_date) VALUES (?,?)";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setDate(1, Date.valueOf(librarian.getHireDate()));
+            pstmt.setInt(1, userId);
+            pstmt.setDate(2, Date.valueOf(librarian.getHireDate()));
             pstmt.executeUpdate();
             try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {

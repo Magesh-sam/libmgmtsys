@@ -7,7 +7,7 @@ import src.model.pojo.Librarian;
 
 public interface ILibrarian {
 
-    int createLibrarian(Librarian librarian) throws SQLException;
+    int createLibrarian(int librarian_id, Librarian librarian) throws SQLException;
 
     Librarian getLibrarianById(int librarianId) throws SQLException;
 

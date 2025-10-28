@@ -13,13 +13,14 @@ import src.interfaces.IMember;
 import src.model.pojo.Member;
 import src.utils.DBConfig;
 
-public class MemberDAO implements IMember  {
+public class MemberDAO implements IMember {
     @Override
-    public int createMember(Member member) throws SQLException {
-        String sql = "INSERT INTO member (join_date) VALUES (?)";
+    public int createMember(int userId, Member member) throws SQLException {
+        String sql = "INSERT INTO member (member_id, join_date) VALUES (?,?)";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setDate(1, Date.valueOf(member.getJoinDate()));
+            pstmt.setLong(1, userId);
+            pstmt.setDate(2, Date.valueOf(member.getJoinDate()));
             pstmt.executeUpdate();
             try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {

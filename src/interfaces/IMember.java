@@ -7,7 +7,7 @@ import src.model.pojo.Member;
 
 public interface IMember {
 
-    int createMember(Member member) throws SQLException;
+    int createMember(int userId, Member member) throws SQLException;
 
     Member getMemberById(int memberId) throws SQLException;
 
@@ -16,5 +16,6 @@ public interface IMember {
     boolean updateMember(Member member) throws SQLException;
 
     boolean deleteMember(int memberId) throws SQLException;
+
 
 }
