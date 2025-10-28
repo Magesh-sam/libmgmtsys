@@ -1,6 +1,7 @@
 package src.service;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 
 import src.interfaces.IAppUser;
@@ -20,6 +21,7 @@ public class AppUserService implements IAppUser {
         this.roleDAO = new UserRoleDAO();
     }
 
+    @Override
     public int createUser(AppUser user, int roleId) throws SQLException {
         Objects.requireNonNull(user, "User cannot be null");
 
@@ -41,6 +43,7 @@ public class AppUserService implements IAppUser {
         return userId;
     }
 
+    @Override
     public int createUser(AppUser user, String roleName) throws SQLException {
         Objects.requireNonNull(roleName, "Role name cannot be null");
         UserRole role = roleDAO.getUserRoleByName(roleName);
@@ -52,8 +55,8 @@ public class AppUserService implements IAppUser {
 
     // user login with email and password
     public AppUser loginUser(String email, String password) throws SQLException {
-       Validation.validateEmail(email);
-       Validation.validatePassword(password);
+        Validation.validateEmail(email);
+        Validation.validatePassword(password);
         return appUserDAO.getUserByEmailAndPassword(email, password);
     }
 
@@ -63,12 +66,10 @@ public class AppUserService implements IAppUser {
         validateUser(user);
 
         AppUser existingAppUser = appUserDAO.getUserByEmail(user.getEmail());
-        // if email belongs to another user -> conflict
         if (existingAppUser != null && existingAppUser.getUserId() != user.getUserId()) {
             throw new IllegalArgumentException("Email already registered by another user.");
         }
 
-        // if roleId is provided, validate it exists
         if (user.getRoleId() > 0) {
             UserRole role = roleDAO.getUserRoleById(user.getRoleId());
             if (role == null) {
@@ -99,10 +100,10 @@ public class AppUserService implements IAppUser {
     @Override
     public AppUser getUserByEmail(String email) throws SQLException {
         Validation.requireNonEmpty(email, "email");
-        if (Validation.isValidEmail(email)) {
+        if (!Validation.isValidEmail(email)) {
             throw new IllegalArgumentException("Invalid Email");
         }
-        throw new UnsupportedOperationException("Unimplemented method 'getUserByEmail'");
+        return appUserDAO.getUserByEmail(email);
     }
 
     @Override
@@ -112,19 +113,21 @@ public class AppUserService implements IAppUser {
         }
         return appUserDAO.getUserById(userId);
     }
-    // private helper methods
+
+    @Override
+    public List<AppUser> getAllUsers() throws SQLException {
+        return appUserDAO.getAllUsers();
+    }
 
     private void validateUser(AppUser user) {
         Validation.requireNonEmpty(user.getName(), "Name");
         Validation.validateEmail(user.getEmail());
         Validation.validatePassword(user.getPassword());
         if (user.getPhone() > 0 && !Validation.isValidMobileNumber(String.valueOf(user.getPhone()))) {
-            throw new IllegalArgumentException("Phone number must be positive.");
+            throw new IllegalArgumentException("Phone number must be a valid mobile number.");
         }
         if (user.getRoleId() < 0) {
             throw new IllegalArgumentException("Role ID must be positive.");
         }
-
     }
-
 }

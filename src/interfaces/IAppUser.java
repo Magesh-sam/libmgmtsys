@@ -1,6 +1,7 @@
 package src.interfaces;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import src.model.pojo.AppUser;
 
@@ -27,5 +28,7 @@ public interface IAppUser {
 
     // Delete user
     boolean deleteUser(int userId) throws SQLException;
+
+    List<AppUser> getAllUsers() throws SQLException;
 
 }

@@ -27,4 +27,8 @@ public interface IAuthor {
     // Delete author
     boolean deleteAuthor(int authorId) throws SQLException;
 
+    boolean authorExists(int authorId) throws SQLException;
+
+    boolean authorExists(String name) throws SQLException;
+
 }

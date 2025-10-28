@@ -105,12 +105,24 @@ public class AuthorDAO implements IAuthor {
         }
     }
 
-    // --- Helpers ---
+    @Override
     public boolean authorExists(int authorId) throws SQLException {
         String sql = "SELECT 1 FROM author WHERE author_id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, authorId);
+            try (ResultSet rs = pst.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    @Override
+    public boolean authorExists(String name) throws SQLException {
+        String sql = "SELECT 1 FROM author WHERE LOWER(name) = LOWER(?)";
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setString(1, name);
             try (ResultSet rs = pst.executeQuery()) {
                 return rs.next();
             }

@@ -17,4 +17,6 @@ public interface IBookAuthor {
 
     boolean updateBookAuthor(int oldBookId, int oldAuthorId, int newBookId, int newAuthorId) throws SQLException;
 
+    boolean bookAuthorExists(int bookId, int authorId) throws SQLException;
+
 }
