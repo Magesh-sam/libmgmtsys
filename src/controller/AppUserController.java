@@ -15,42 +15,98 @@ public class AppUserController implements IAppUser {
     }
 
     @Override
-    public int createUser(AppUser user, int roleId) throws SQLException {
-        return appUserService.createUser(user, roleId);
+    public int createUser(AppUser user, int roleId) {
+        try {
+
+            return appUserService.createUser(user, roleId);
+        } catch (SQLException e) {
+            System.out.println("Error creating user: " + e.getMessage());
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
-    public int createUser(AppUser user, String roleName) throws SQLException {
-        return appUserService.createUser(user, roleName);
+    public int createUser(AppUser user, String roleName) {
+        try {
+
+            return appUserService.createUser(user, roleName);
+        } catch (SQLException e) {
+            System.out.println("Error creating user: " + e.getMessage());
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
-    public AppUser getUserByEmailAndPassword(String email, String password) throws SQLException {
-        return appUserService.getUserByEmailAndPassword(email, password);
+    public AppUser getUserByEmailAndPassword(String email, String password) {
+        try {
+
+            return appUserService.getUserByEmailAndPassword(email, password);
+        } catch (SQLException e) {
+            System.out.println("Error fetching user: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public AppUser getUserByEmail(String email) throws SQLException {
-        return appUserService.getUserByEmail(email);
+    public AppUser getUserByEmail(String email) {
+        try {
+
+            return appUserService.getUserByEmail(email);
+        } catch (SQLException e) {
+            System.out.println("Error fetching user: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public AppUser getUserById(int userId) throws SQLException {
-        return appUserService.getUserById(userId);
+    public AppUser getUserById(int userId) {
+        try {
+
+            return appUserService.getUserById(userId);
+        } catch (SQLException e) {
+            System.out.println("Error fetching user: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public boolean updateUser(AppUser user) throws SQLException {
-        return appUserService.updateUser(user);
+    public boolean updateUser(AppUser user) {
+        try {
+
+            return appUserService.updateUser(user);
+        } catch (SQLException e) {
+            System.out.println("Error updating user: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public boolean deleteUser(int userId) throws SQLException {
-        return appUserService.deleteUser(userId);
+    public boolean deleteUser(int userId) {
+        try {
+
+            return appUserService.deleteUser(userId);
+        } catch (SQLException e) {
+            System.out.println("Error deleting user: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public List<AppUser> getAllUsers() throws SQLException {
-        return appUserService.getAllUsers();
+    public List<AppUser> getAllUsers() {
+        try {
+
+            return appUserService.getAllUsers();
+        } catch (SQLException e) {
+            System.out.println("Error fetching users: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 }
