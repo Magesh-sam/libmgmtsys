@@ -35,4 +35,16 @@ public class Validation {
         return p.matcher(mobileNoRegex).matches();
     }
 
+    public static void validateEmail(String email) {
+        requireNonEmpty(email, "email");
+        if (!isValidEmail(email)) {
+            throw new IllegalArgumentException("Invalid email");
+        }
+    }
+
+    public static void validatePassword(String password) {
+        requireNonEmpty(password, "password");
+        requireMinLength(password, 8, "password");
+    }
+
 }

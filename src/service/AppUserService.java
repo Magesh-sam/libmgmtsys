@@ -11,7 +11,7 @@ import src.model.pojo.AppUser;
 import src.model.pojo.UserRole;
 import src.utils.Validation;
 
-public class AppUserService {
+public class AppUserService implements IAppUser {
     private final IAppUser appUserDAO;
     private final IUserRole roleDAO;
 
@@ -20,7 +20,7 @@ public class AppUserService {
         this.roleDAO = new UserRoleDAO();
     }
 
-    public int registerUser(AppUser user, int roleId) throws SQLException {
+    public int createUser(AppUser user, int roleId) throws SQLException {
         Objects.requireNonNull(user, "User cannot be null");
 
         validateUser(user);
@@ -36,18 +36,18 @@ public class AppUserService {
         }
 
         user.setRoleId(roleId);
-        int userId = appUserDAO.createUser(user);
+        int userId = appUserDAO.createUser(user, roleId);
 
         return userId;
     }
 
-    public int registerUser(AppUser user, String roleName) throws SQLException {
+    public int createUser(AppUser user, String roleName) throws SQLException {
         Objects.requireNonNull(roleName, "Role name cannot be null");
         UserRole role = roleDAO.getUserRoleByName(roleName);
         if (role == null) {
             throw new IllegalArgumentException("Role with name '" + roleName + "' does not exist.");
         }
-        return registerUser(user, role.getRoleId());
+        return createUser(user, role.getRoleId());
     }
 
     // user login with email and password
@@ -89,20 +89,40 @@ public class AppUserService {
         return appUserDAO.deleteUser(userId);
     }
 
+    @Override
+    public AppUser getUserByEmailAndPassword(String email, String password) throws SQLException {
+        Validation.validateEmail(email);
+        Validation.validatePassword(password);
+
+        return appUserDAO.getUserByEmailAndPassword(email, password);
+    }
+
+    @Override
+    public AppUser getUserByEmail(String email) throws SQLException {
+        Validation.requireNonEmpty(email, "email");
+        if (Validation.isValidEmail(email)) {
+            throw new IllegalArgumentException("Invalid Email");
+        }
+        throw new UnsupportedOperationException("Unimplemented method 'getUserByEmail'");
+    }
+
+    @Override
+    public AppUser getUserById(int userId) throws SQLException {
+        if (userId <= 0) {
+            throw new IllegalArgumentException("user id cannot be empty or negative");
+        }
+        return appUserDAO.getUserById(userId);
+    }
     // private helper methods
 
     private void validateUser(AppUser user) {
         Validation.requireNonEmpty(user.getName(), "Name");
-        Validation.requireNonEmpty(user.getEmail(), "Email");
-        if (!Validation.isValidEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Invalid email format.");
-        }
-        Validation.requireNonEmpty(user.getPassword(), "Password");
-        Validation.requireMinLength(user.getPassword(), 8, "Password");
+        Validation.validateEmail(user.getEmail());
+        Validation.validatePassword(user.getPassword());
         if (user.getPhone() > 0 && !Validation.isValidMobileNumber(String.valueOf(user.getPhone()))) {
             throw new IllegalArgumentException("Phone number must be positive.");
         }
-        if (user.getRoleId() <= 0) {
+        if (user.getRoleId() < 0) {
             throw new IllegalArgumentException("Role ID must be positive.");
         }
 

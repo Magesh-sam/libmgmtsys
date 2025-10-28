@@ -9,7 +9,7 @@ import src.utils.DBConfig;
 public class AppUserDAO implements IAppUser {
 
     @Override
-    public int createUser(AppUser user) throws SQLException {
+    public int createUser(AppUser user, int roleId) throws SQLException {
         String sql = "INSERT INTO app_user (name, email, password, role_id, phone, address) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConfig.getConnection()) {
 
@@ -43,23 +43,25 @@ public class AppUserDAO implements IAppUser {
     // Create user by role name (look up role_id first)
     @Override
     public int createUser(AppUser user, String roleName) throws SQLException {
-        String lookup = "SELECT role_id FROM userrole WHERE name = ?";
+        String sql = "SELECT role_id FROM userrole WHERE name = ?";
         try (Connection conn = DBConfig.getConnection();
-                PreparedStatement pst = conn.prepareStatement(lookup)) {
+                PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, roleName);
+            int roleId = 0;
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
-                    user.setRoleId(rs.getInt("role_id"));
+                    roleId = rs.getInt("role_id");
                 } else {
                     throw new SQLException("Role with name '" + roleName + "' does not exist.");
                 }
             }
+
+            return createUser(user, roleId);
+
         }
-        return createUser(user); // will validate role again and insert
     }
 
-    // helper to check role existence using provided connection
     private boolean roleExists(Connection conn, int roleId) throws SQLException {
         if (roleId <= 0)
             return false;

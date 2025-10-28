@@ -8,7 +8,7 @@ public interface IAppUser {
 
     // Create user (roleId must be present in user.getRoleId() and must exist in
     // userrole table)
-    int createUser(AppUser user) throws SQLException;
+    int createUser(AppUser user, int roleId) throws SQLException;
 
     // Create user by role name (look up role_id first)
     int createUser(AppUser user, String roleName) throws SQLException;
