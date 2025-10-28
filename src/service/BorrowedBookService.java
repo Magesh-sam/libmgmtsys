@@ -97,4 +97,26 @@ public class BorrowedBookService implements IBorrowedBooks {
 
     }
 
+    @Override
+    public List<BorrowedBooks> getBorrowedBooksByMemberId(int memberId) throws SQLException {
+        if (memberId <= 0)
+            throw new IllegalArgumentException("memberId must be positive");
+        return borrowedDAO.getBorrowedBooksByMemberId(memberId);
+    }
+
+    @Override
+    public List<BorrowedBooks> getOverdueBooks(LocalDate currentDate) throws SQLException {
+        if (currentDate == null)
+            currentDate = LocalDate.now();
+        return borrowedDAO.getOverdueBooks(currentDate);
+    }
+
+    @Override
+    public boolean borrowedBookExists(int borrowedId) throws SQLException {
+        if (borrowedId <= 0) {
+            throw new IllegalArgumentException("Borrowed ID cannot be empty or negative");
+        }
+        return borrowedDAO.borrowedBookExists(borrowedId);
+    }
+
 }

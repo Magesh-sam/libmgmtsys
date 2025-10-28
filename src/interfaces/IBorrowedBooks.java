@@ -18,4 +18,10 @@ public interface IBorrowedBooks {
 
     boolean deleteBorrowedBook(int borrowedId) throws SQLException;
 
+    boolean borrowedBookExists(int borrowedId) throws SQLException;
+
+    List<BorrowedBooks> getBorrowedBooksByMemberId(int memberId) throws SQLException;
+
+    List<BorrowedBooks> getOverdueBooks(LocalDate currentDate) throws SQLException;
+
 }

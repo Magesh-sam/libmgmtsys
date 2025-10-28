@@ -8,32 +8,32 @@ import src.model.dao.CategoryDAO;
 import src.model.pojo.Category;
 import src.utils.Validation;
 
-public class CategoryService {
+public class CategoryService implements ICategory {
     private final ICategory categoryDAO;
 
     public CategoryService() {
         this.categoryDAO = new CategoryDAO();
     }
 
-    public int createCategory(Category category) throws Exception {
+    public int createCategory(Category category) throws SQLException {
         Objects.requireNonNull(category, "Category cannot be null");
         validateCategory(category);
 
         return categoryDAO.createCategory(category);
     }
 
-    public Category getCategoryById(int categoryId) throws Exception {
+    public Category getCategoryById(int categoryId) throws SQLException {
         if (categoryId <= 0) {
             throw new IllegalArgumentException("Invalid Category ID");
         }
         return categoryDAO.getCategoryById(categoryId);
     }
 
-    public java.util.List<Category> getAllCategories() throws Exception {
+    public java.util.List<Category> getAllCategories() throws SQLException {
         return categoryDAO.getAllCategories();
     }
 
-    public void updateCategory(Category category) throws Exception {
+    public boolean updateCategory(Category category) throws SQLException {
         Objects.requireNonNull(category, "Category cannot be null");
         if (category.getCategoryId() <= 0) {
             throw new IllegalArgumentException("Invalid Category ID");
@@ -46,14 +46,18 @@ public class CategoryService {
                 Objects.equals(existingCategory.getDescription(), category.getDescription())) {
             throw new IllegalArgumentException("No changes detected in the category details.");
         }
-        categoryDAO.updateCategory(category);
+        return categoryDAO.updateCategory(category);
     }
 
-    public void deleteCategory(int categoryId) throws SQLException {
+    public boolean deleteCategory(int categoryId) throws SQLException {
         if (categoryId <= 0) {
             throw new IllegalArgumentException("Invalid Category ID");
         }
-        categoryDAO.deleteCategory(categoryId);
+        Category existingCategory = categoryDAO.getCategoryById(categoryId);
+        if (existingCategory == null) {
+            throw new IllegalArgumentException("Category with ID " + categoryId + " does not exist.");
+        }
+        return categoryDAO.deleteCategory(categoryId);
     }
 
     private void validateCategory(Category category) {
