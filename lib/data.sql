@@ -10,11 +10,11 @@ INSERT INTO userrole (name) VALUES
 -- Insert Data: app users (3 members, 2 librarians, 1 admin)
 -- =====================================
 INSERT INTO app_user (name, email, password, role_id, phone, address) VALUES
-('Alice Johnson', 'alice@example.com', 'pass123', 1, '9876543210', 'NY, USA'),
-('Bob Smith', 'bob@example.com', 'pass123', 1, '9123456780', 'LA, USA'),
-('Charlie Brown', 'charlie@example.com', 'pass123', 1, '9988776655', 'Chicago, USA'),
-('David Miller', 'david@example.com', 'pass123', 2, '9090909090', 'Boston, USA'),
-('Eve Turner', 'eve@example.com', 'pass123', 2, '9191919191', 'Seattle, USA'),
+('Alice Johnson', 'alice@example.com', 'pass1234', 1, '9876543210', 'NY, USA'),
+('Bob Smith', 'bob@example.com', 'pass1234', 1, '9123456780', 'LA, USA'),
+('Charlie Brown', 'charlie@example.com', 'pass1234', 1, '9988776655', 'Chicago, USA'),
+('David Miller', 'david@example.com', 'pass1234', 2, '9090909090', 'Boston, USA'),
+('Eve Turner', 'eve@example.com', 'pass1234', 2, '9191919191', 'Seattle, USA'),
 ('Admin User', 'admin@example.com', 'admin123', 3, '9000000000', 'Head Office');
 
 -- =====================================
