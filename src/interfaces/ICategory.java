@@ -22,4 +22,6 @@ public interface ICategory {
     // Delete category
     boolean deleteCategory(int categoryId) throws SQLException;
 
+    Category getCategoryByName(String name) throws SQLException;
+
 }

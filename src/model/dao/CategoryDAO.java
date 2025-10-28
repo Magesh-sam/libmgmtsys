@@ -76,7 +76,7 @@ public class CategoryDAO implements ICategory {
         }
     }
 
-    // --- Added Functional Methods ---
+    @Override
     public Category getCategoryByName(String name) throws SQLException {
         String sql = "SELECT category_id, name, description FROM category WHERE LOWER(name) = LOWER(?)";
         try (Connection conn = DBConfig.getConnection();

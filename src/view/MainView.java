@@ -1,7 +1,9 @@
 package src.view;
 
 import src.controller.AppUserController;
+import src.controller.UserRoleController;
 import src.model.pojo.AppUser;
+import src.model.pojo.UserRole;
 import src.utils.InputUtil;
 
 public class MainView {
@@ -42,14 +44,13 @@ public class MainView {
         System.out.print("Enter password: ");
         String password = InputUtil.getStringInput();
 
-        System.out.print("Enter role (1=Member, 2=Librarian, 3=Admin): ");
-        int roleId = InputUtil.getIntInput();
+        UserRole role = new UserRoleController().getUserRoleByName("member");
 
         AppUser user = new AppUser();
         user.setName(name);
         user.setEmail(email);
         user.setPassword(password);
-        int result = userController.createUser(user, roleId);
+        int result = userController.createUser(user, role.getRoleId());
 
         if (result > 0)
             System.out.println("Registration successful.");
@@ -71,12 +72,15 @@ public class MainView {
             return;
         }
         System.out.println("Login successful. Welcome, " + user.getName() + "!");
+        UserRole role = new UserRoleController().getUserRoleById(user.getRoleId());
 
-        // switch (user.getRole().getName().toLowerCase()) {
-        // case "admin" -> new AdminView(user).showMenu();
-        // case "librarian" -> new LibrarianView(user).showMenu();
-        // case "member" -> new MemberView(user).showMenu();
-        // default -> System.out.println("Unknown role.");
-        // }
+        switch (role.getName().toLowerCase()) {
+            // case "admin" -> new AdminView(user).showMenu();
+            case "admin" -> System.out.println("Admin menu");
+            case "librarian" -> new LibrarianUserView().displayLibrarianMenu();
+            case "member" -> System.out.println("Member menu");
+            // case "member" -> new MemberView(user).showMenu();
+            default -> System.out.println("Unknown role.");
+        }
     }
 }

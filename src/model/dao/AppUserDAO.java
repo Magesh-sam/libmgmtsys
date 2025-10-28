@@ -170,6 +170,8 @@ public class AppUserDAO implements IAppUser {
         return list;
     }
 
+    
+
     private AppUser map(ResultSet rs) throws SQLException {
         AppUser u = new AppUser();
         u.setUserId(rs.getInt("user_id"));

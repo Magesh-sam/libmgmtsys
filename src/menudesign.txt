@@ -1,0 +1,27 @@
+Main View
+    1.register
+    2.login
+        libraian menu
+            book management -> create,read, update,delete book
+            auhtor management -> create,read, update,delete author
+            category management -> create,read, update,delete caegory
+            publisher management -> create,read, update,delete publisher
+            fine management -> create,read, update,delete fine
+            accept returned book, issue book
+            member management - > create,read, update,delete member
+        Member menu
+            list all books
+            list available books
+            list all authors
+            list all caegories
+            list all publishers
+            search book by title, author, category, publisher
+            borrow book
+            return book
+            view fines (list)
+            view borrowed books (list)
+        Admin menu
+            role management
+            user management
+    3.exit
+        

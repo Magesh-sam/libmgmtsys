@@ -41,6 +41,19 @@ public class CategoryController implements ICategory {
         }
     }
 
+    public Category getCategoryByName(String name) {
+        try {
+            return categoryService.getCategoryByName(name);
+        } catch (SQLException e) {
+            System.out.println("Error fetching category by name: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        } catch (IllegalArgumentException e) {
+            System.out.println("Validation error: " + e.getMessage());
+            return null;
+        }
+    }
+
     @Override
     public List<Category> getAllCategories() {
         try {
