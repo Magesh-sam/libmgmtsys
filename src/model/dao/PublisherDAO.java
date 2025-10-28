@@ -12,7 +12,7 @@ import src.interfaces.IPublisher;
 import src.model.pojo.Publisher;
 import src.utils.DBConfig;
 
-public class PublisherDAO implements IPublisher  {
+public class PublisherDAO implements IPublisher {
     @Override
     public int createPublisher(Publisher publisher) throws SQLException {
         String sql = "INSERT INTO publisher (name, address) VALUES (?, ?)";
@@ -61,6 +61,21 @@ public class PublisherDAO implements IPublisher  {
     }
 
     @Override
+    public Publisher getPublisherByName(String name) throws SQLException {
+        String sql = "SELECT publisher_id, name, address FROM publisher WHERE LOWER(name) = LOWER(?)";
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, name);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToPublisher(rs);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public boolean updatePublisher(Publisher publisher) throws SQLException {
         String sql = "UPDATE publisher SET name = ?, address = ? WHERE publisher_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -87,4 +102,5 @@ public class PublisherDAO implements IPublisher  {
         publisher.setAddress(rs.getString("address"));
         return publisher;
     }
+
 }

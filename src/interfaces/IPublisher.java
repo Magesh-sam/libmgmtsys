@@ -17,4 +17,6 @@ public interface IPublisher {
 
     boolean deletePublisher(int publisherId) throws SQLException;
 
+    Publisher getPublisherByName(String name) throws SQLException;
+
 }
