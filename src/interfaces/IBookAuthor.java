@@ -15,4 +15,8 @@ public interface IBookAuthor {
 
     boolean deleteBookAuthor(int bookId, int authorId) throws SQLException;
 
+    boolean updateBookByAuthor(int bookId) throws SQLException;
+
+    boolean updateAuthorByBook(int authorId) throws SQLException;
+
 }

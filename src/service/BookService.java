@@ -16,6 +16,7 @@ public class BookService implements IBook {
         this.bookDAO = new BookDAO();
     }
 
+    @Override
     public int createBook(Book book) throws SQLException {
         Objects.requireNonNull(book, "Book cannot be null");
         validateBook(book);
@@ -27,6 +28,7 @@ public class BookService implements IBook {
         return bookDAO.createBook(book);
     }
 
+    @Override
     public Book getBookById(int bookId) throws SQLException {
         if (bookId <= 0) {
             throw new IllegalArgumentException("Book ID cannot be empty or negative");
@@ -34,20 +36,24 @@ public class BookService implements IBook {
         return bookDAO.getBookById(bookId);
     }
 
+    @Override
     public List<Book> getAllBooks() throws SQLException {
         return bookDAO.getAllBooks();
     }
 
+    @Override
     public Book getBookByTitle(String searchTerm) throws SQLException {
         Validation.requireNonEmpty(searchTerm, "searchTerm");
         return bookDAO.getBookByTitle(searchTerm);
     }
 
+    @Override
     public List<Book> getBooksByTitle(String searchTerm) throws SQLException {
         Validation.requireNonEmpty(searchTerm, "searchTerm");
         return bookDAO.getBooksByTitle(searchTerm);
     }
 
+    @Override
     public boolean deleteBook(int bookId) throws SQLException {
         if (bookId <= 0) {
             throw new IllegalArgumentException("Book ID cannot be empty or negative");
@@ -55,6 +61,7 @@ public class BookService implements IBook {
         return bookDAO.deleteBook(bookId);
     }
 
+    @Override
     public boolean updateBook(Book book) throws SQLException {
         Objects.requireNonNull(book, "Book cannot be null");
         validateBook(book);
