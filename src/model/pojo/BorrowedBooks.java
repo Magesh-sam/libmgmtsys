@@ -14,7 +14,7 @@ public class BorrowedBooks {
         return borrowedId;
     }
 
-    public void setborrowedId(int borrowedId) {
+    public void setBorrowedId(int borrowedId) {
         this.borrowedId = borrowedId;
     }
 
