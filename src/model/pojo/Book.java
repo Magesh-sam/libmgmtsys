@@ -6,13 +6,11 @@ public class Book {
     private String title;
     private int categoryId;
     private int publisherId;
-    private int publicationYear;
     private String language;
     private double price;
 
-    public Book(String title, int publicationYear, String language, double price) {
+    public Book(String title, String language, double price) {
         this.title = title;
-        this.publicationYear = publicationYear;
         this.language = language;
         this.price = price;
     }
@@ -50,14 +48,6 @@ public class Book {
 
     public void setPublisherId(int publisherId) {
         this.publisherId = publisherId;
-    }
-
-    public int getPublicationYear() {
-        return publicationYear;
-    }
-
-    public void setPublicationYear(int publicationYear) {
-        this.publicationYear = publicationYear;
     }
 
     public String getLanguage() {
