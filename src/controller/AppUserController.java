@@ -1,6 +1,7 @@
 package src.controller;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import src.interfaces.IAppUser;
 import src.model.pojo.AppUser;
@@ -46,5 +47,10 @@ public class AppUserController implements IAppUser {
     @Override
     public boolean deleteUser(int userId) throws SQLException {
         return appUserService.deleteUser(userId);
+    }
+
+    @Override
+    public List<AppUser> getAllUsers() throws SQLException {
+        return appUserService.getAllUsers();
     }
 }
