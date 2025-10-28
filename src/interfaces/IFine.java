@@ -18,4 +18,8 @@ public interface IFine {
 
     boolean deleteFine(int fineId) throws SQLException;
 
+    List<Fine> getFinesByMemberId(int memberId) throws SQLException;
+
+    List<Fine> getUnpaidFines() throws SQLException;
+
 }
