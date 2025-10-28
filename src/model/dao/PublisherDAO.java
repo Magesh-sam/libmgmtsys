@@ -48,7 +48,7 @@ public class PublisherDAO implements IPublisher  {
 
     @Override
     public List<Publisher> getAllPublishers() throws SQLException {
-        String sql = "SELECT publisher_id, name, address FROM publishers";
+        String sql = "SELECT publisher_id, name, address FROM publisher";
         List<Publisher> list = new ArrayList<>();
         try (Connection conn = DBConfig.getConnection();
                 Statement stmt = conn.createStatement();
