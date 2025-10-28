@@ -20,11 +20,10 @@ public class BookService implements IBook {
     public int createBook(Book book) throws SQLException {
         Objects.requireNonNull(book, "Book cannot be null");
         validateBook(book);
-        Book existingBookById = bookDAO.getBookByTitle(book.getTitle());
-        if (existingBookById != null) {
-            throw new SQLException("Book with ID " + book.getBookId() + " already exists.");
+        Book existingBookByTitle = bookDAO.getBookByTitle(book.getTitle());
+        if (existingBookByTitle != null) {
+            throw new SQLException("Book with title '" + book.getTitle() + "' already exists.");
         }
-
         return bookDAO.createBook(book);
     }
 
@@ -68,7 +67,7 @@ public class BookService implements IBook {
 
         Book existingBook = bookDAO.getBookByTitle(book.getTitle());
         if (existingBook != null && existingBook.getBookId() != book.getBookId()) {
-            throw new IllegalArgumentException("Book with ID " + book.getBookId() + " already exists.");
+            throw new IllegalArgumentException("Another book with same title already exists.");
         }
         return bookDAO.updateBook(book);
     }
@@ -118,7 +117,12 @@ public class BookService implements IBook {
         if (book.getPrice() < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
         }
+    }
 
+    // ---- Added helpers ----
+    public boolean titleExists(String title) throws SQLException {
+        Validation.requireNonEmpty(title, "title");
+        return bookDAO.getBookByTitle(title) != null;
     }
 
 }

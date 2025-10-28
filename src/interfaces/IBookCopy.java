@@ -32,4 +32,6 @@ public interface IBookCopy {
     // Get count of available copies for a book
     int getAvailableCopiesCount(int bookId) throws SQLException;
 
+    boolean copyExists(int copyId) throws SQLException;
+
 }

@@ -35,4 +35,8 @@ public interface IBook {
 
     List<Book> getBooksByAuthorName(String authorName) throws SQLException;
 
+    List<Book> getBooksByCategory(String category) throws SQLException;
+
+    List<Book> getBooksByPublisher(String publisher) throws SQLException;
+
 }

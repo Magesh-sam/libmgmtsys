@@ -122,12 +122,52 @@ public class BookDAO implements IBook {
     }
 
     @Override
+    public List<Book> getBooksByCategory(String category) throws SQLException {
+        String sql = """
+                SELECT b.book_id, b.title, b.category_id, b.publisher_id
+                FROM book b
+                JOIN category c ON b.category_id = c.category_id
+                WHERE LOWER(c.name) LIKE LOWER(?)
+                """;
+        List<Book> list = new ArrayList<>();
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setString(1, "%" + category + "%");
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next())
+                    list.add(map(rs));
+            }
+        }
+        return list;
+    }
+
+    @Override
     public List<Book> getBooksByPublisher(int publisherId) throws SQLException {
         String sql = "SELECT book_id, title, category_id, publisher_id FROM book WHERE publisher_id = ?";
         List<Book> list = new ArrayList<>();
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, publisherId);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next())
+                    list.add(map(rs));
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<Book> getBooksByPublisher(String publisher) throws SQLException {
+        String sql = """
+                SELECT b.book_id, b.title, b.category_id, b.publisher_id
+                FROM book b
+                JOIN publisher p ON b.publisher_id = p.publisher_id
+                WHERE LOWER(p.name) LIKE LOWER(?)
+                """;
+        List<Book> list = new ArrayList<>();
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setString(1, "%" + publisher + "%");
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next())
                     list.add(map(rs));

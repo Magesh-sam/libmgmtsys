@@ -6,15 +6,18 @@ import java.util.Objects;
 
 import src.interfaces.IBookCopy;
 import src.model.dao.BookCopyDAO;
+import src.model.dao.BookDAO;
 import src.model.pojo.BookCopy;
 import src.model.pojo.BookCopy.BookStatus;
 import src.utils.Validation;
 
 public class BookCopyService implements IBookCopy {
     private final IBookCopy bookCopyDAO;
+    private final BookDAO bookDAO;
 
     public BookCopyService() {
         this.bookCopyDAO = new BookCopyDAO();
+        this.bookDAO = new BookDAO();
     }
 
     @Override
@@ -23,7 +26,10 @@ public class BookCopyService implements IBookCopy {
         if (bookCopy.getBookId() <= 0) {
             throw new IllegalArgumentException("bookId cannot be empty or negative");
         }
-
+        // validate referenced book exists
+        if (!bookDAO.bookExists(bookCopy.getBookId())) {
+            throw new IllegalArgumentException("Referenced book does not exist.");
+        }
         return bookCopyDAO.createBookCopy(bookCopy);
     }
 
@@ -90,6 +96,11 @@ public class BookCopyService implements IBookCopy {
             throw new IllegalArgumentException("bookId cannot be empty or negative");
         }
         return bookCopyDAO.getAvailableCopiesCount(bookId);
+    }
+
+    @Override
+    public boolean copyExists(int copyId) throws SQLException {
+        return bookCopyDAO.copyExists(copyId);
     }
 
 }
