@@ -2,6 +2,8 @@ package src.utils;
 
 import java.util.regex.Pattern;
 
+import src.exceptions.InvalidEmailException;
+
 public class Validation {
     public static void requireNonEmpty(String value, String fieldName) {
         if (value == null || value.trim().isEmpty())
@@ -38,7 +40,7 @@ public class Validation {
     public static void validateEmail(String email) {
         requireNonEmpty(email, "email");
         if (!isValidEmail(email)) {
-            throw new IllegalArgumentException("Invalid email");
+            throw new InvalidEmailException("Email : " + email);
         }
     }
 

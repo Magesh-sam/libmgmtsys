@@ -52,9 +52,8 @@ public class AppUserService implements IAppUser {
 
     // user login with email and password
     public AppUser loginUser(String email, String password) throws SQLException {
-        Validation.requireNonEmpty(email, "Email");
-        Validation.requireNonEmpty(password, "Password");
-        Validation.requireMinLength(password, 8, "Password");
+       Validation.validateEmail(email);
+       Validation.validatePassword(password);
         return appUserDAO.getUserByEmailAndPassword(email, password);
     }
 
