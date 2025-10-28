@@ -22,11 +22,9 @@ public class AppUserController implements IAppUser {
             return appUserService.createUser(user, roleId);
         } catch (SQLException | IllegalArgumentException e) {
             System.out.println("Error creating user: " + e.getMessage());
-            e.printStackTrace();
             return -1;
         } catch (InvalidEmailException e) {
             System.out.println("Invalid email: " + e.getMessage());
-            e.printStackTrace();
             return -1;
         }
 
@@ -39,11 +37,9 @@ public class AppUserController implements IAppUser {
             return appUserService.createUser(user, roleName);
         } catch (SQLException | IllegalArgumentException e) {
             System.out.println("Error creating user: " + e.getMessage());
-            e.printStackTrace();
             return -1;
         } catch (InvalidEmailException e) {
             System.out.println("Invalid email: " + e.getMessage());
-            e.printStackTrace();
             return -1;
         }
     }
@@ -55,11 +51,9 @@ public class AppUserController implements IAppUser {
             return appUserService.getUserByEmailAndPassword(email, password);
         } catch (SQLException | IllegalArgumentException e) {
             System.out.println("Error fetching user: " + e.getMessage());
-            e.printStackTrace();
             return null;
         } catch (InvalidEmailException e) {
             System.out.println("Invalid email: " + e.getMessage());
-            e.printStackTrace();
             return null;
         }
     }
@@ -71,11 +65,9 @@ public class AppUserController implements IAppUser {
             return appUserService.getUserByEmail(email);
         } catch (SQLException | IllegalArgumentException e) {
             System.out.println("Error fetching user: " + e.getMessage());
-            e.printStackTrace();
             return null;
         } catch (InvalidEmailException e) {
             System.out.println("Invalid email: " + e.getMessage());
-            e.printStackTrace();
             return null;
         }
     }
@@ -87,7 +79,6 @@ public class AppUserController implements IAppUser {
             return appUserService.getUserById(userId);
         } catch (SQLException | IllegalArgumentException e) {
             System.out.println("Error fetching user: " + e.getMessage());
-            e.printStackTrace();
             return null;
         }
     }
@@ -99,11 +90,9 @@ public class AppUserController implements IAppUser {
             return appUserService.updateUser(user);
         } catch (SQLException | IllegalArgumentException e) {
             System.out.println("Error updating user: " + e.getMessage());
-            e.printStackTrace();
             return false;
         } catch (InvalidEmailException e) {
             System.out.println("Invalid email: " + e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
@@ -115,7 +104,6 @@ public class AppUserController implements IAppUser {
             return appUserService.deleteUser(userId);
         } catch (SQLException | IllegalArgumentException e) {
             System.out.println("Error deleting user: " + e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
@@ -127,8 +115,11 @@ public class AppUserController implements IAppUser {
             return appUserService.getAllUsers();
         } catch (SQLException e) {
             System.out.println("Error fetching users: " + e.getMessage());
-            e.printStackTrace();
             return null;
         }
+    }
+
+    public AppUser login(String email, String password) {
+        return getUserByEmailAndPassword(email, password);
     }
 }
