@@ -62,23 +62,23 @@ public class BookAuthorDAO implements IBookAuthor {
     }
 
     @Override
-    public boolean updateBookByAuthor(int bookId) throws SQLException {
+    public boolean updateBookByAuthor(int bookId, int authorId) throws SQLException {
         String sql = "UPDATE book_author SET book_id = ? WHERE author_id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, bookId);
-            pstmt.setInt(2, bookId);
+            pstmt.setInt(2, authorId);
             return pstmt.executeUpdate() > 0;
         }
     }
 
     @Override
-    public boolean updateAuthorByBook(int authorId) throws SQLException {
+    public boolean updateAuthorByBook(int authorId, int bookId) throws SQLException {
         String sql = "UPDATE book_author SET author_id = ? WHERE book_id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, authorId);
-            pstmt.setInt(2, authorId);
+            pstmt.setInt(2, bookId);
             return pstmt.executeUpdate() > 0;
         }
     }
