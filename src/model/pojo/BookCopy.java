@@ -34,4 +34,9 @@ public class BookCopy {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return "BookCopy [copyId=" + copyId + ", bookId=" + bookId + ", status=" + status + "]";
+    }
+
 }

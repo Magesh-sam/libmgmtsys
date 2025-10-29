@@ -97,6 +97,12 @@ public class PublisherDAO implements IPublisher {
         }
     }
 
+    @Override
+    public boolean publisherExists(String publisherName) throws SQLException {
+        return getPublisherByName(publisherName) != null;
+
+    }
+
     private Publisher mapResultSetToPublisher(ResultSet rs) throws SQLException {
         Publisher publisher = new Publisher(rs.getInt("publisher_id"), rs.getString("name"));
         publisher.setAddress(rs.getString("address"));

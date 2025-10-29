@@ -24,4 +24,6 @@ public interface ICategory {
 
     Category getCategoryByName(String name) throws SQLException;
 
+    boolean categoryExists(String name) throws SQLException;
+
 }

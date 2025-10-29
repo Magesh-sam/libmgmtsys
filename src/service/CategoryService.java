@@ -64,4 +64,16 @@ public class CategoryService implements ICategory {
         Validation.requireNonEmpty(category.getName(), "Category Name");
     }
 
+    @Override
+    public Category getCategoryByName(String name) throws SQLException {
+        Validation.requireNonEmpty(name, "Name");
+        return categoryDAO.getCategoryByName(name);
+    }
+
+    @Override
+    public boolean categoryExists(String name) throws SQLException {
+        Validation.requireNonEmpty(name, "Name");
+        return categoryDAO.categoryExists(name);
+    }
+
 }

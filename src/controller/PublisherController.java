@@ -93,4 +93,15 @@ public class PublisherController implements IPublisher {
             return false;
         }
     }
+
+    @Override
+    public boolean publisherExists(String publisherName) {
+        try {
+            return publisherService.publisherExists(publisherName);
+        } catch (SQLException e) {
+            System.out.println("Error checking publisher existence: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

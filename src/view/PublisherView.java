@@ -2,12 +2,18 @@ package src.view;
 
 import src.model.pojo.Publisher;
 import src.service.PublisherService;
+import src.controller.PublisherController;
+import src.utils.InputUtil;
 import java.util.List;
 import java.util.Scanner;
 
 public class PublisherView {
-    private final Scanner sc = new Scanner(System.in);
-    private final PublisherService publisherService = new PublisherService();
+
+    private final PublisherController publisherController;
+
+    public PublisherView() {
+        this.publisherController = new PublisherController();
+    }
 
     public void display() {
         int choice;
@@ -21,14 +27,7 @@ public class PublisherView {
             System.out.println("5. Search Publisher by Name");
             System.out.println("6. Exit");
             System.out.print("Enter your choice: ");
-            String input = sc.nextLine().trim();
-
-            if (!input.matches("\\d+")) {
-                System.out.println("Invalid input! Please enter a number (1–6).");
-                continue;
-            }
-
-            choice = Integer.parseInt(input);
+            choice = InputUtil.getIntInput();
 
             switch (choice) {
                 case 1 -> addPublisher();
@@ -103,9 +102,12 @@ public class PublisherView {
         System.out.print("Enter new Contact (" + existing.getContactNumber() + "): ");
         String contact = sc.nextLine().trim();
 
-        if (!name.isEmpty()) existing.setName(name);
-        if (!address.isEmpty()) existing.setAddress(address);
-        if (!contact.isEmpty()) existing.setContactNumber(contact);
+        if (!name.isEmpty())
+            existing.setName(name);
+        if (!address.isEmpty())
+            existing.setAddress(address);
+        if (!contact.isEmpty())
+            existing.setContactNumber(contact);
 
         boolean success = publisherService.updatePublisher(existing);
 

@@ -41,6 +41,13 @@ public class InputUtil {
         }
     }
 
+    public static String readRawString() {
+        if (scanner.hasNextLine()) {
+            return scanner.nextLine().trim();
+        }
+        return "";
+    }
+
     // Read a yes/no confirmation
     public static boolean getYesNoInput() {
         while (true) {
@@ -51,5 +58,10 @@ public class InputUtil {
                 return false;
             System.out.print("Enter yes or no: ");
         }
+    }
+
+    public static Scanner getScanner() {
+
+        return scanner;
     }
 }

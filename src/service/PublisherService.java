@@ -82,4 +82,11 @@ public class PublisherService implements IPublisher {
         Validation.requireNonEmpty(publisher.getName(), "Publisher name");
         Validation.requireNonEmpty(publisher.getAddress(), "Publisher address");
     }
+
+    @Override
+    public boolean publisherExists(String publisherName) throws SQLException {
+        Validation.requireNonEmpty(publisherName, "Publisher name");
+        return publisherDAO.publisherExists(publisherName);
+
+    }
 }

@@ -90,6 +90,7 @@ public class CategoryDAO implements ICategory {
         return null;
     }
 
+    @Override
     public boolean categoryExists(String name) throws SQLException {
         String sql = "SELECT 1 FROM category WHERE LOWER(name) = LOWER(?)";
         try (Connection conn = DBConfig.getConnection();

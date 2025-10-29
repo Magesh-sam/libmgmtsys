@@ -14,8 +14,6 @@ public class Fine {
     private LocalDate issueDate;
     private FineStatus status;
 
-    
-
     public Fine(int fineId, int borrowedId, double amount, LocalDate issueDate, FineStatus status) {
         this.fineId = fineId;
         this.borrowedId = borrowedId;
@@ -24,16 +22,12 @@ public class Fine {
         this.status = status;
     }
 
-    
-
     public Fine(int borrowedId, double amount, LocalDate issueDate, FineStatus status) {
         this.borrowedId = borrowedId;
         this.amount = amount;
         this.issueDate = issueDate;
         this.status = status;
     }
-
-
 
     public int getFineId() {
         return fineId;
@@ -73,6 +67,12 @@ public class Fine {
 
     public void setStatus(FineStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Fine [fineId=" + fineId + ", borrowedId=" + borrowedId + ", amount=" + amount + ", issueDate="
+                + issueDate + ", status=" + status + "]";
     }
 
 }

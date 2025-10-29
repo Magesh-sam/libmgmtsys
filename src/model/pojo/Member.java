@@ -34,4 +34,9 @@ public class Member extends AppUser {
         this.joinDate = joinDate;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + "Member [memberId=" + memberId + ", joinDate=" + joinDate + "]";
+    }
+
 }

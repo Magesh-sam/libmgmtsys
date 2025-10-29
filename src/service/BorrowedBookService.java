@@ -21,7 +21,7 @@ public class BorrowedBookService implements IBorrowedBooks {
     public int createBorrowedBook(BorrowedBooks borrowed) throws SQLException {
         Objects.requireNonNull(borrowed, "Borrowed book entry cannot be null");
         validateBorrowedBook(borrowed);
-
+        
         if (borrowed.getDueDate() != null &&
                 borrowed.getBorrowDate() != null &&
                 borrowed.getDueDate().isBefore(borrowed.getBorrowDate())) {

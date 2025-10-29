@@ -16,6 +16,13 @@ public class Publisher {
         this.name = name;
     }
 
+    public Publisher(String name) {
+        this.name = name;
+    }
+
+    public Publisher() {
+    }
+
     public String getName() {
         return name;
     }
@@ -46,6 +53,11 @@ public class Publisher {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Publisher [publisherId=" + publisherId + ", name=" + name + ", address=" + address + "]";
     }
 
 }

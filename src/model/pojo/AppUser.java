@@ -88,4 +88,10 @@ public class AppUser {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "AppUser [userId=" + userId + ", name=" + name + ", email=" + email + ", roleId=" + roleId + ", phone="
+                + phone + ", address=" + address + "]";
+    }
+
 }

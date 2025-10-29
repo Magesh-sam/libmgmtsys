@@ -32,4 +32,9 @@ public class UserRole {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "UserRole [roleId=" + roleId + ", name=" + name + "]";
+    }
+
 }

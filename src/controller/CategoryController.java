@@ -92,4 +92,18 @@ public class CategoryController implements ICategory {
             return false;
         }
     }
+
+    @Override
+    public boolean categoryExists(String name) {
+        try {
+            return categoryService.categoryExists(name);
+        } catch (SQLException e) {
+            System.out.println("Error checking category existence: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } catch (IllegalArgumentException e) {
+            System.out.println("Validation error: " + e.getMessage());
+            return false;
+        }
+    }
 }

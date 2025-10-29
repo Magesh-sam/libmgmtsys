@@ -1,18 +1,27 @@
 package src.view;
 
-import src.controller.AuthorController;
 import src.controller.BookController;
 import src.controller.CategoryController;
 import src.controller.PublisherController;
 import src.model.pojo.Book;
-import src.service.BookService;
+import src.model.pojo.Category;
+import src.model.pojo.Publisher;
 import src.utils.InputUtil;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class BookView {
-    private final Scanner sc = new Scanner(System.in);
+
+    private final BookController bookController;
+    private final CategoryController categoryController;
+    private final PublisherController publisherController;
+
+    public BookView() {
+        this.bookController = new BookController();
+        this.categoryController = new CategoryController();
+        this.publisherController = new PublisherController();
+
+    }
 
     public void display() {
         int choice = -1;
@@ -38,7 +47,7 @@ public class BookView {
                     System.out.println("Exiting Book Management...");
                     return;
                 }
-                default -> System.out.println("Invalid choice! Enter between 1–6.");
+                default -> System.out.println("Invalid choice! Enter between 1 to 6.");
             }
         }
     }
@@ -47,95 +56,90 @@ public class BookView {
         System.out.println("\n--- Add New Book ---");
         System.out.print("Enter Title: ");
         String title = InputUtil.getStringInput();
-        System.out.print("Enter Author: ");
-        String author = InputUtil.getStringInput();
-        System.out.print("Enter Publisher: ");
-        String publisher = InputUtil.getStringInput();
-        System.out.print("Enter Category: ");
-        String category = InputUtil.getStringInput();
+
+        printPublishers();
+        System.out.print("Enter Publisher ID: ");
+
+        int publisherId = InputUtil.getIntInput();
+        printCategories();
+        System.out.print("Enter Category ID: ");
+        int categoryId = InputUtil.getIntInput();
         System.out.print("Enter Book Language: ");
         String language = InputUtil.getStringInput();
-        System.out.print("Enter Quantity: ");
-        Double price = InputUtil.getDoubleInput();
+        System.out.print("Enter Price: ");
+        double price = InputUtil.getDoubleInput();
 
         Book b = new Book(title, language, price);
         
-        int publisherId = new PublisherController().getPublisherByName(publisher).getPublisherId();
-        int categoryId = new CategoryController().getCategoryByName(category).getCategoryId();
-        b.setCategoryId(categoryId);
         b.setPublisherId(publisherId);
-        // if()
-        int bookId = new BookController().createBook(b);
+        b.setCategoryId(categoryId);
+        int bookId = bookController.createBook(b);
 
         if (bookId > 0) {
             System.out.println("Book added successfully!");
         } else {
             System.out.println("Failed to add book. Please try again.");
         }
-    }
 
-    private void viewAllBooks() {
-        System.out.println("\n--- Book List ---");
-        List<Book> books = bookService.getAllBooks();
-
-        if (books.isEmpty()) {
-            System.out.println("No books found in the library.");
-            return;
-        }
-
-        for (Book b : books) {
-            System.out.println(b);
-        }
     }
 
     private void updateBook() {
         System.out.println("\n--- Update Book ---");
+        viewAllBooks();
         System.out.print("Enter Book ID to update: ");
-        int bookId = Integer.parseInt(sc.nextLine().trim());
+        int bookId = InputUtil.getIntInput();
 
-        Book existing = bookService.getBookById(bookId);
+        Book existing = bookController.getBookById(bookId);
         if (existing == null) {
             System.out.println("Book not found!");
             return;
         }
 
-        System.out.print("Enter new Title (" + existing.getTitle() + "): ");
-        String title = sc.nextLine().trim();
-        System.out.print("Enter new Author (" + existing.getAuthor() + "): ");
-        String author = sc.nextLine().trim();
-        System.out.print("Enter new Publisher (" + existing.getPublisher() + "): ");
-        String publisher = sc.nextLine().trim();
-        System.out.print("Enter new Category (" + existing.getCategory() + "): ");
-        String category = sc.nextLine().trim();
-        System.out.print("Enter new Quantity (" + existing.getQuantity() + "): ");
-        String quantityInput = sc.nextLine().trim();
+        System.out.println("Press Enter to leave the string field unchanged.");
+        System.out.println("Press Enter 0 to leave the number field unchanged.");
 
-        if (!title.isEmpty())
-            existing.setTitle(title);
-        if (!author.isEmpty())
-            existing.setAuthor(author);
-        if (!publisher.isEmpty())
-            existing.setPublisher(publisher);
-        if (!category.isEmpty())
-            existing.setCategory(category);
-        if (!quantityInput.isEmpty())
-            existing.setQuantity(Integer.parseInt(quantityInput));
+        System.out.print("Enter Title: ");
+        String title = InputUtil.readRawString();
+        printPublishers();
 
-        boolean success = bookService.updateBook(existing);
+        System.out.print("Enter Publisher ID: ");
+
+        int publisherId = InputUtil.getIntInput();
+        printCategories();
+        System.out.print("Enter Category ID: ");
+        int categoryId = InputUtil.getIntInput();
+        System.out.print("Enter Book Language: ");
+        String language = InputUtil.readRawString();
+        System.out.print("Enter Price: ");
+        double price = InputUtil.getDoubleInput();
+
+        title = title.isEmpty() ? existing.getTitle() : title;
+        publisherId = publisherId == 0 ? existing.getPublisherId() : publisherId;
+        categoryId = categoryId == 0 ? existing.getCategoryId() : categoryId;
+        language = language.isEmpty() ? existing.getLanguage() : language;
+        price = price <= 0 ? existing.getPrice() : price;
+
+        existing.setTitle(title);
+        existing.setPublisherId(publisherId);
+        existing.setCategoryId(categoryId);
+        existing.setLanguage(language);
+        existing.setPrice(price);
+
+        boolean success = bookController.updateBook(existing);
 
         if (success) {
             System.out.println("Book updated successfully!");
         } else {
-            System.out.println("Update failed!");
+            System.out.println("Book not found or could not be updated.");
         }
     }
 
     private void deleteBook() {
         System.out.println("\n--- Delete Book ---");
         System.out.print("Enter Book ID to delete: ");
-        int bookId = Integer.parseInt(sc.nextLine().trim());
+        int bookId = InputUtil.getIntInput();
 
-        boolean success = bookService.deleteBook(bookId);
+        boolean success = bookController.deleteBook(bookId);
 
         if (success) {
             System.out.println("Book deleted successfully!");
@@ -147,9 +151,9 @@ public class BookView {
     private void searchBookByTitle() {
         System.out.println("\n--- Search Book ---");
         System.out.print("Enter title keyword: ");
-        String keyword = sc.nextLine().trim();
+        String keyword = InputUtil.getStringInput();
 
-        List<Book> results = bookService.searchBookByTitle(keyword);
+        List<Book> results = bookController.getBooksByTitle(keyword);
 
         if (results.isEmpty()) {
             System.out.println("No books found matching \"" + keyword + "\".");
@@ -160,4 +164,47 @@ public class BookView {
             System.out.println(b);
         }
     }
+
+    private void viewAllBooks() {
+        System.out.println("\n--- Book List ---");
+        List<Book> books = bookController.getAllBooks();
+
+        if (books.isEmpty()) {
+            System.out.println("No books found in the library.");
+            return;
+        }
+
+        for (Book b : books) {
+            System.out.println(b);
+        }
+    }
+
+    private void printPublishers() {
+
+        List<Publisher> publishers = publisherController.getAllPublishers();
+        if (!publishers.isEmpty()) {
+
+            System.out.println("\n--- List of Publishers ---");
+            for (Publisher publisher : publishers) {
+                System.out.println(publisher);
+            }
+        } else {
+            System.out.println("No publishers found in the system. Add one first.");
+        }
+    }
+
+    private void printCategories() {
+
+        List<Category> categories = categoryController.getAllCategories();
+        if (!categories.isEmpty()) {
+
+            System.out.println("\n--- List of Categories ---");
+            for (Category category : categories) {
+                System.out.println(category);
+            }
+        } else {
+            System.out.println("No categories found in the system. Add one first.");
+        }
+    }
+
 }

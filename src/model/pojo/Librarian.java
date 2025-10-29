@@ -30,4 +30,9 @@ public class Librarian extends AppUser {
         this.hireDate = hireDate;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + "Librarian [librarianId=" + librarianId + ", hireDate=" + hireDate + "]";
+    }
+
 }

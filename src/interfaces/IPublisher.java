@@ -19,4 +19,6 @@ public interface IPublisher {
 
     Publisher getPublisherByName(String name) throws SQLException;
 
+    boolean publisherExists(String publisherName) throws SQLException;
+
 }

@@ -22,7 +22,7 @@ public class LibrarianUserView {
             int choice = InputUtil.getIntInput();
 
             switch (choice) {
-                case 1 -> manageBooks();
+                case 1 -> new BookView().display();
                 case 2 -> System.out.println("===Book Copies Management===");
                 case 3 -> manageAuthors();
                 case 4 -> manageCategories();
@@ -37,34 +37,6 @@ public class LibrarianUserView {
                 default -> System.out.println("Invalid choice. Try again.");
             }
         }
-    }
-
-    private void manageBooks() {
-        System.out.println("===Book Management===");
-        while (true) {
-            System.out.println("\n--- Book Management ---");
-            System.out.println("1. Add Book");
-            System.out.println("2. View Books");
-            System.out.println("3. Update Book");
-            System.out.println("4. Delete Book");
-            System.out.println("5. Back to Librarian Menu");
-            System.out.print("Enter your choice: ");
-
-            int choice = InputUtil.getIntInput();
-
-            switch (choice) {
-                case 1 -> new BookController().createBook(null);
-                case 2 -> System.out.println("View Books functionality");
-                case 3 -> System.out.println("Update Book functionality");
-                case 4 -> System.out.println("Delete Book functionality");
-                case 5 -> {
-                    System.out.println("Returning to Librarian Menu...");
-                    return;
-                }
-                default -> System.out.println("Invalid choice. Try again.");
-            }
-        }
-
     }
 
     private void manageAuthors() {
