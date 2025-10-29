@@ -24,8 +24,8 @@ public class LibrarianUserView {
             switch (choice) {
                 case 1 -> new BookView().display();
                 case 2 -> System.out.println("===Book Copies Management===");
-                case 3 -> manageAuthors();
-                case 4 -> manageCategories();
+                case 3 -> new AuthorView().display();
+                case 4 -> new CategoryView().display();
                 case 5 -> managePublishers();
                 case 6 -> manageBorrowings();
                 case 7 -> manageFines();
