@@ -14,7 +14,7 @@ public class BorrowedBooksDAO implements IBorrowedBooks {
     @Override
     public int createBorrowedBook(BorrowedBooks borrowed) throws SQLException {
         String sql = """
-                INSERT INTO borrowed_book (member_id, copy_id, borrow_date, due_date, return_date)
+                INSERT INTO borrowed_books (member_id, copy_id, borrow_date, due_date, return_date)
                 VALUES (?, ?, ?, ?, ?)
                 """;
         try (Connection conn = DBConfig.getConnection();
@@ -36,7 +36,7 @@ public class BorrowedBooksDAO implements IBorrowedBooks {
 
     @Override
     public BorrowedBooks getBorrowedBookById(int borrowedId) throws SQLException {
-        String sql = "SELECT borrowed_id, member_id, copy_id, borrow_date, due_date, return_date FROM borrowed_book WHERE borrowed_id = ?";
+        String sql = "SELECT borrowed_id, member_id, copy_id, borrow_date, due_date, return_date FROM borrowed_books WHERE borrowed_id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, borrowedId);
@@ -50,7 +50,7 @@ public class BorrowedBooksDAO implements IBorrowedBooks {
 
     @Override
     public List<BorrowedBooks> getAllBorrowedBooks() throws SQLException {
-        String sql = "SELECT borrowed_id, member_id, copy_id, borrow_date, due_date, return_date FROM borrowed_book ORDER BY borrowed_id";
+        String sql = "SELECT borrowed_id, member_id, copy_id, borrow_date, due_date, return_date FROM borrowed_books ORDER BY borrowed_id";
         List<BorrowedBooks> list = new ArrayList<>();
         try (Connection conn = DBConfig.getConnection();
                 Statement stmt = conn.createStatement();
@@ -63,7 +63,7 @@ public class BorrowedBooksDAO implements IBorrowedBooks {
 
     @Override
     public boolean updateReturnDate(int borrowedId, LocalDate returnDate) throws SQLException {
-        String sql = "UPDATE borrowed_book SET return_date = ? WHERE borrowed_id = ?";
+        String sql = "UPDATE borrowed_books SET return_date = ? WHERE borrowed_id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDate(1, returnDate != null ? Date.valueOf(returnDate) : null);
@@ -74,7 +74,7 @@ public class BorrowedBooksDAO implements IBorrowedBooks {
 
     @Override
     public boolean deleteBorrowedBook(int borrowedId) throws SQLException {
-        String sql = "DELETE FROM borrowed_book WHERE borrowed_id = ?";
+        String sql = "DELETE FROM borrowed_books WHERE borrowed_id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, borrowedId);
@@ -84,7 +84,7 @@ public class BorrowedBooksDAO implements IBorrowedBooks {
 
     @Override
     public boolean borrowedBookExists(int borrowedId) throws SQLException {
-        String sql = "SELECT 1 FROM borrowed_book WHERE borrowed_id = ?";
+        String sql = "SELECT 1 FROM borrowed_books WHERE borrowed_id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, borrowedId);
@@ -96,7 +96,7 @@ public class BorrowedBooksDAO implements IBorrowedBooks {
 
     @Override
     public List<BorrowedBooks> getBorrowedBooksByMemberId(int memberId) throws SQLException {
-        String sql = "SELECT borrowed_id, member_id, copy_id, borrow_date, due_date, return_date FROM borrowed_book WHERE member_id = ?";
+        String sql = "SELECT borrowed_id, member_id, copy_id, borrow_date, due_date, return_date FROM borrowed_books WHERE member_id = ?";
         List<BorrowedBooks> list = new ArrayList<>();
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -113,7 +113,7 @@ public class BorrowedBooksDAO implements IBorrowedBooks {
     public List<BorrowedBooks> getOverdueBooks(LocalDate currentDate) throws SQLException {
         String sql = """
                 SELECT borrowed_id, member_id, copy_id, borrow_date, due_date, return_date
-                FROM borrowed_book
+                FROM borrowed_books
                 WHERE due_date < ? AND return_date IS NULL
                 """;
         List<BorrowedBooks> list = new ArrayList<>();

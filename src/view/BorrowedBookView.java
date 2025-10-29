@@ -108,7 +108,7 @@ public class BorrowedBookView {
         }
 
         System.out.print("Enter New Return Date (YYYY-MM-DD) or press Enter to skip: ");
-        String dateInput = InputUtil.getStringInput();
+        String dateInput = InputUtil.readRawString();
         if (!dateInput.isEmpty()) {
             existing.setReturnDate(LocalDate.parse(dateInput));
         }
