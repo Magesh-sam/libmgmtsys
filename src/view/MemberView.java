@@ -1,200 +1,225 @@
 package src.view;
 
-import java.util.List;
-import java.util.Scanner;
-
-import src.controller.BookController;
-import src.controller.AuthorController;
-import src.controller.CategoryController;
-import src.controller.PublisherController;
-import src.controller.BorrowedBookController;
-
+import src.App;
+import src.controller.AppUserController;
+import src.controller.MemberController;
+import src.controller.UserRoleController;
 import src.model.pojo.AppUser;
-import src.model.pojo.Book;
-import src.model.pojo.Author;
-import src.model.pojo.Category;
-import src.model.pojo.Publisher;
-import src.model.pojo.BorrowedBooks;
-
+import src.model.pojo.Member;
+import src.model.pojo.UserRole;
 import src.utils.InputUtil;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MemberView {
 
-    private final BookController bookController;
-    private final AuthorController authorController;
-    private final CategoryController categoryController;
-    private final PublisherController publisherController;
-    private final BorrowedBookController borrowedBookController;
+    private final MemberController memberController;
+    private final AppUserController userController;
 
-    private final AppUser currentUser;
-
-    public MemberView(AppUser user) {
-        this.currentUser = user;
-        this.bookController = new BookController();
-        this.authorController = new AuthorController();
-        this.categoryController = new CategoryController();
-        this.publisherController = new PublisherController();
-        this.borrowedBookController = new BorrowedBookController();
+    public MemberView() {
+        this.memberController = new MemberController();
+        this.userController = new AppUserController();
     }
 
-    public void showMenu() {
+    public void display() {
         while (true) {
-            System.out.println("\n===== Member Menu =====");
-            System.out.println("1. List all Books");
-            System.out.println("2. List all Authors");
-            System.out.println("3. List all Categories");
-            System.out.println("4. List all Publishers");
-            System.out.println("5. Search Book by Title");
-            System.out.println("6. Search Book by Author");
-            System.out.println("7. Search Book by Category");
-            System.out.println("8. Search Book by Publisher");
-            System.out.println("9. Borrow Book");
-            System.out.println("10. Return Book");
-            System.out.println("11. Log Out");
+            System.out.println("\n===== Member Management =====");
+            System.out.println("1. Add Member");
+            System.out.println("2. View All Members");
+            System.out.println("3. Update Member");
+            System.out.println("4. Delete Member");
+            System.out.println("5. Search Member by ID");
+            System.out.println("6. Exit");
             System.out.print("Enter your choice: ");
-
             int choice = InputUtil.getIntInput();
 
             switch (choice) {
-                case 1 -> listAllBooks();
-                case 2 -> listAllAuthors();
-                case 3 -> listAllCategories();
-                case 4 -> listAllPublishers();
-                case 5 -> searchBookByTitle();
-                case 6 -> searchBookByAuthor();
-                case 7 -> searchBookByCategory();
-                case 8 -> searchBookByPublisher();
-                case 9 -> borrowBook();
-                case 10 -> returnBook();
-                case 11 -> {
-                    System.out.println("Logging out... Goodbye, " + currentUser.getName() + "!");
+                case 1 -> addMember();
+                case 2 -> viewAllMembers();
+                case 3 -> updateMember();
+                case 4 -> deleteMember();
+                case 5 -> searchMemberById();
+                case 6 -> {
+                    System.out.println("Exiting Member Management...");
                     return;
                 }
-                default -> System.out.println("Invalid choice! Please try again.");
+                default -> System.out.println("Invalid choice! Enter between 1 to 6.");
             }
         }
     }
 
-    // 1. List all books
-    private void listAllBooks() {
-        List<Book> books = bookController.getAllBooks();
-        if (books == null || books.isEmpty()) {
-            System.out.println("No books found.");
+    private void addMember() {
+        System.out.println("\n--- Add Member ---");
+
+        System.out.print("Enter full name: ");
+        String name = InputUtil.getStringInput();
+
+        System.out.print("Enter email: ");
+        String email = InputUtil.getStringInput();
+
+        System.out.print("Enter password: ");
+        String password = InputUtil.getStringInput();
+
+        System.out.print("Enter address: (optional) ");
+        String address = InputUtil.readRawString();
+
+        address = address.isEmpty() ? null : address;
+        LocalDate joinDate = LocalDate.now();
+
+        UserRole role = new UserRoleController().getUserRoleByName("member");
+
+        AppUser user = new AppUser();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setAddress(address);
+        user.setRoleId(role.getRoleId());
+        user.setRoleId(role.getRoleId());
+
+        int userId = userController.createUser(user, role.getRoleId());
+
+        if (userId > 0) {
+            Member member = new Member();
+            member.setUserId(userId);
+            member.setJoinDate(joinDate);
+
+            int memberId = memberController.createMember(userId, member);
+
+            if (memberId > 0) {
+                System.out.println("Member created successfully with ID: " + memberId);
+            } else {
+                System.out.println("User created but failed to create member profile. Contact admin.");
+            }
+        } else {
+            System.out.println("Failed to create user.");
+        }
+    }
+
+    private void viewAllMembers() {
+        System.out.println("\n--- Member List ---");
+
+        List<Member> members = memberController.getAllMembers();
+        if (members == null || members.isEmpty()) {
+            System.out.println("No members found.");
             return;
         }
-        System.out.println("\n--- List of Books ---");
-        for (Book book : books) {
-            System.out.println("Book ID: " + book.getBookId() + " | Title: " + book.getTitle() +
-                    " | Language: " + book.getLanguage() + " | Price: " + book.getPrice());
+
+        for (Member member : members) {
+
+            System.out.println("id: " + member.getMemberId()
+                    + ", Name: " + member.getName()
+                    + ", Join Date: " + member.getJoinDate());
+
         }
     }
 
-    // 2. List all authors
-    private void listAllAuthors() {
-        List<Author> authors = authorController.getAllAuthors();
-        if (authors == null || authors.isEmpty()) {
-            System.out.println("No authors found.");
+    private void updateMember() {
+        System.out.println("\n--- Update Member ---");
+        viewAllMembers();
+        System.out.print("Enter Member ID to update: ");
+        int memberId = InputUtil.getIntInput();
+        System.out.println("memberId: " + memberId);
+
+        Member existing = memberController.getMemberById(memberId);
+        if (existing == null) {
+            System.out.println("Member not found!");
             return;
         }
-        System.out.println("\n--- List of Authors ---");
-        for (Author author : authors) {
-            System.out.println("Author ID: " + author.getAuthorId() + " | Name: " + author.getName());
-        }
-    }
 
-    // 3. List all categories
-    private void listAllCategories() {
-        List<Category> categories = categoryController.getAllCategories();
-        if (categories == null || categories.isEmpty()) {
-            System.out.println("No categories found.");
+        AppUser existingUser = userController.getUserById(existing.getMemberId());
+        if (existingUser == null) {
+            System.out.println("Associated user record not found. Data might be corrupted.");
             return;
         }
-        System.out.println("\n--- List of Categories ---");
-        for (Category cat : categories) {
-            System.out.println("Category ID: " + cat.getCategoryId() + " | Name: " + cat.getName());
+
+        System.out.println("Press Enter to skip a field.");
+
+        System.out.print("Enter Member Name (" + existingUser.getName() + "): ");
+        String name = InputUtil.readRawString();
+
+        System.out.print("Enter Member Email (" + existingUser.getEmail() + "): ");
+        String email = InputUtil.readRawString();
+
+        System.out.print("Enter Address (" + existingUser.getAddress() + "): ");
+        String address = InputUtil.readRawString();
+
+        System.out.print("Enter new Password (leave blank to keep existing): ");
+        String password = InputUtil.readRawString();
+
+        name = name.isEmpty() ? existingUser.getName() : name;
+        email = email.isEmpty() ? existingUser.getEmail() : email;
+        password = password.isEmpty() ? existingUser.getPassword() : password;
+        address = address.isEmpty() ? existingUser.getAddress() : address;
+
+        // Update AppUser entity
+        existingUser.setName(name);
+        existingUser.setEmail(email);
+        existingUser.setPassword(password);
+        existingUser.setAddress(address);
+
+        // Persist both updates
+        boolean userUpdated = userController.updateUser(existingUser);
+        boolean memberUpdated = memberController.updateMember(existing);
+
+        if (userUpdated && memberUpdated) {
+            System.out.println("Member and user details updated successfully!");
+        } else if (userUpdated) {
+            System.out.println("User updated, but failed to update member details.");
+        } else if (memberUpdated) {
+            System.out.println("Member updated, but failed to update user details.");
+        } else {
+            System.out.println("Failed to update both user and member details.");
         }
     }
 
-    // 4. List all publishers
-    private void listAllPublishers() {
-        List<Publisher> publishers = publisherController.getAllPublishers();
-        if (publishers == null || publishers.isEmpty()) {
-            System.out.println("No publishers found.");
+    private void deleteMember() {
+        System.out.println("\n--- Delete Member ---");
+        viewAllMembers();
+        System.out.print("Enter Member ID to delete: ");
+        int memberId = InputUtil.getIntInput();
+
+        boolean success = memberController.deleteMember(memberId);
+
+        if (success) {
+            System.out.println("Member deleted successfully!");
+        } else {
+            System.out.println("Member not found or could not be deleted.");
+        }
+    }
+
+    private void searchMemberById() {
+        System.out.println("\n--- Search Member by ID ---");
+        System.out.print("Enter Member ID: ");
+        int memberId = InputUtil.getIntInput();
+
+        Member member = memberController.getMemberById(memberId);
+
+        if (member == null) {
+            System.out.println("No member found with ID: " + memberId);
+        } else {
+            System.out.println("\n--- Member Details ---");
+            System.out.printf("ID: %d%nName: %s%nEmail: %s%nAddress: %s%nJoin Date: %s%n",
+                    member.getMemberId(),
+                    member.getName(),
+                    member.getEmail(),
+                    member.getAddress(),
+                    member.getJoinDate());
+        }
+    }
+
+    private void printAllUsers() {
+        List<AppUser> users = userController.getAllUsers();
+        if (users == null || users.isEmpty()) {
+            System.out.println("No users found.");
             return;
+
         }
-        System.out.println("\n--- List of Publishers ---");
-        for (Publisher pub : publishers) {
-            System.out.println("Publisher ID: " + pub.getPublisherId() + " | Name: " + pub.getName());
+        for (AppUser user : users) {
+            System.out.println(user);
         }
     }
 
-    // 5. Search by title
-    private void searchBookByTitle() {
-        System.out.print("Enter book title: ");
-        String title = InputUtil.getStringInput();
-        List<Book> books = bookController.getBooksByTitle(title);
-        if (books == null || books.isEmpty()) {
-            System.out.println("No books found with title: " + title);
-            return;
-        }
-        books.forEach(book -> System.out.println("Book ID: " + book.getBookId() + " | Title: " + book.getTitle()));
-    }
-
-    // 6. Search by author
-    private void searchBookByAuthor() {
-        System.out.print("Enter author name: ");
-        String authorName = InputUtil.getStringInput();
-        List<Book> books = bookController.getBooksByAuthorName(authorName);
-        if (books == null || books.isEmpty()) {
-            System.out.println("No books found for author: " + authorName);
-            return;
-        }
-        books.forEach(book -> System.out.println("Book ID: " + book.getBookId() + " | Title: " + book.getTitle()));
-    }
-
-    // 7. Search by category
-    private void searchBookByCategory() {
-        System.out.print("Enter category name: ");
-        String categoryName = InputUtil.getStringInput();
-        List<Book> books = bookController.getBooksByCategory(categoryName);
-        if (books == null || books.isEmpty()) {
-            System.out.println("No books found in category: " + categoryName);
-            return;
-        }
-        books.forEach(book -> System.out.println("Book ID: " + book.getBookId() + " | Title: " + book.getTitle()));
-    }
-
-    // 8. Search by publisher
-    private void searchBookByPublisher() {
-        System.out.print("Enter publisher name: ");
-        String publisherName = InputUtil.getStringInput();
-        List<Book> books = bookController.getBooksByPublisher(publisherName);
-        if (books == null || books.isEmpty()) {
-            System.out.println("No books found for publisher: " + publisherName);
-            return;
-        }
-        books.forEach(book -> System.out.println("Book ID: " + book.getBookId() + " | Title: " + book.getTitle()));
-    }
-
-    // 9. Borrow book
-    private void borrowBook() {
-        System.out.print("Enter Book ID to borrow: ");
-        int bookId = InputUtil.getIntInput();
-        boolean result = borrowedBookController.createBorrowedBook(new BorrowedBooks());
-        if (result)
-            System.out.println("Book borrowed successfully!");
-        else
-            System.out.println("Failed to borrow book. It might already be borrowed.");
-    }
-
-    // 10. Return book
-    private void returnBook() {
-        System.out.print("Enter Borrow ID to return: ");
-        int borrowId = InputUtil.getIntInput();
-        boolean result = borrowedBookController.returnBook(borrowId);
-        if (result)
-            System.out.println("Book returned successfully!");
-        else
-            System.out.println("Failed to return book. Check the borrow ID again.");
-    }
 }

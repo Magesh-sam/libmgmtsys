@@ -68,6 +68,44 @@ public class AppUserDAO implements IAppUser {
         return null;
     }
 
+    public AppUser getUserByMemberId(int memberId) throws SQLException {
+        String sql = """
+                SELECT u.user_id, u.name, u.email, u.password, u.phone, u.address,
+                       u.role_id, r.name AS role_name
+                FROM app_user u
+                JOIN member m ON u.user_id = m.member_id
+                WHERE m.member_id = ?
+                """;
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, memberId);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next())
+                    return map(rs);
+            }
+        }
+        return null;
+    }
+
+    public AppUser getUserByLibrarianId(int librarianId) throws SQLException {
+        String sql = """
+                SELECT u.user_id, u.name, u.email, u.password, u.phone, u.address,
+                       u.role_id
+                FROM app_user u
+                JOIN librarian l ON u.user_id = l.librarian_id
+                WHERE l.librarian_id = ?
+                """;
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, librarianId);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next())
+                    return map(rs);
+            }
+        }
+        return null;
+    }
+
     @Override
     public AppUser getUserByEmail(String email) throws SQLException {
         String sql = """
@@ -92,7 +130,7 @@ public class AppUserDAO implements IAppUser {
     public AppUser getUserByEmailAndPassword(String email, String password) throws SQLException {
         String sql = """
                 SELECT u.user_id, u.name, u.email, u.password, u.phone, u.address,
-                       u.role_id, r.name AS role_name
+                       u.role_id
                 FROM app_user u
                 JOIN userrole r ON u.role_id = r.role_id
                 WHERE LOWER(u.email) = LOWER(?) AND u.password = ?
@@ -155,7 +193,7 @@ public class AppUserDAO implements IAppUser {
     public List<AppUser> getAllUsers() throws SQLException {
         String sql = """
                 SELECT u.user_id, u.name, u.email, u.password, u.phone, u.address,
-                       u.role_id, r.name AS role_name
+                       u.role_id
                 FROM app_user u
                 JOIN userrole r ON u.role_id = r.role_id
                 ORDER BY u.user_id
@@ -169,8 +207,6 @@ public class AppUserDAO implements IAppUser {
         }
         return list;
     }
-
-    
 
     private AppUser map(ResultSet rs) throws SQLException {
         AppUser u = new AppUser();

@@ -1,16 +1,22 @@
 package src.view;
 
+import java.time.LocalDate;
+
 import src.controller.AppUserController;
+import src.controller.MemberController;
 import src.controller.UserRoleController;
 import src.model.pojo.AppUser;
+import src.model.pojo.Member;
 import src.model.pojo.UserRole;
 import src.utils.InputUtil;
 
 public class MainView {
     private final AppUserController userController;
+    private final MemberController memberController;
 
     public MainView() {
         this.userController = new AppUserController();
+        this.memberController = new MemberController();
     }
 
     public void displayMainMenu() {
@@ -50,12 +56,19 @@ public class MainView {
         user.setName(name);
         user.setEmail(email);
         user.setPassword(password);
-        int result = userController.createUser(user, role.getRoleId());
+        int userId = userController.createUser(user, role.getRoleId());
 
-        if (result > 0)
+        if (userId > 0) {
             System.out.println("Registration successful.");
-        else
+            int memberId = memberController.createMember(userId, new Member(LocalDate.now()));
+            if (memberId > 0) {
+                System.out.println("Member profile created with ID: " + memberId);
+            } else {
+                System.out.println("User Created. Failed to create member profile. Contact admin.");
+            }
+        } else {
             System.out.println("Registration failed.");
+        }
     }
 
     private void loginUser() {
@@ -78,7 +91,7 @@ public class MainView {
             // case "admin" -> new AdminView(user).showMenu();
             case "admin" -> System.out.println("Admin menu");
             case "librarian" -> new LibrarianUserView().displayLibrarianMenu();
-            case "member" -> System.out.println("Member menu");
+            case "member" -> new MemberUserView(user).display();
             // case "member" -> new MemberView(user).showMenu();
             default -> System.out.println("Unknown role.");
         }

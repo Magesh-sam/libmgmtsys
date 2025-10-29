@@ -26,10 +26,10 @@ public class LibrarianUserView {
                 case 2 -> new BookCopyView().display();
                 case 3 -> new AuthorView().display();
                 case 4 -> new CategoryView().display();
-                case 5 -> managePublishers();
-                case 6 -> manageBorrowings();
-                case 7 -> manageFines();
-                case 8 -> manageMembers();
+                case 5 -> new PublisherView().display();
+                case 6 -> new BorrowedBookView().display();
+                case 7 -> new FineView().display();
+                case 8 -> new MemberView().display();
                 case 9 -> new BookAuthorView().display();
                 case 10 -> {
                     System.out.println("Logging out...");
@@ -38,22 +38,6 @@ public class LibrarianUserView {
                 default -> System.out.println("Invalid choice. Try again.");
             }
         }
-    }
-
-    private void managePublishers() {
-        System.out.println("===Publisher Management===");
-    }
-
-    private void manageBorrowings() {
-        System.out.println("===Borrowings Management===");
-    }
-
-    private void manageFines() {
-        System.out.println("===Fine Management===");
-    }
-
-    private void manageMembers() {
-        System.out.println("===Member Management===");
     }
 
 }

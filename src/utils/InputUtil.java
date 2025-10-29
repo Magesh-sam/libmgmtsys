@@ -17,6 +17,17 @@ public class InputUtil {
         }
     }
 
+    public static Long getLongInput() {
+        while (true) {
+            String input = scanner.nextLine().trim();
+            try {
+                return Long.parseLong(input);
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid number. Enter again: ");
+            }
+        }
+    }
+
     // Safely read double input (with validation)
     public static double getDoubleInput() {
         while (true) {

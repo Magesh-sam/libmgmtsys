@@ -14,7 +14,7 @@ public class FineDAO implements IFine {
 
     @Override
     public int createFine(Fine fine) throws SQLException {
-        String sql = "INSERT INTO fine (borrowed_id, amount, issue_date, status) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO fine (borrowed_id, amount, issued_date, status) VALUES (?, ?, ?, ?::fine_status)";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -34,7 +34,7 @@ public class FineDAO implements IFine {
 
     @Override
     public Fine getFineById(int fineId) throws SQLException {
-        String sql = "SELECT fine_id, borrowed_id, amount, issue_date, status FROM fine WHERE fine_id = ?";
+        String sql = "SELECT fine_id, borrowed_id, amount, issued_date, status FROM fine WHERE fine_id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, fineId);
@@ -48,7 +48,7 @@ public class FineDAO implements IFine {
 
     @Override
     public List<Fine> getAllFines() throws SQLException {
-        String sql = "SELECT fine_id, borrowed_id, amount, issue_date, status FROM fine ORDER BY fine_id";
+        String sql = "SELECT fine_id, borrowed_id, amount, issued_date, status FROM fine ORDER BY fine_id";
         List<Fine> list = new ArrayList<>();
         try (Connection conn = DBConfig.getConnection();
                 Statement stmt = conn.createStatement();
@@ -61,7 +61,7 @@ public class FineDAO implements IFine {
 
     @Override
     public boolean updateFineStatus(int fineId, FineStatus status) throws SQLException {
-        String sql = "UPDATE fine SET status = ? WHERE fine_id = ?";
+        String sql = "UPDATE fine SET status = ?::fine_status WHERE fine_id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, status.name());
@@ -81,7 +81,7 @@ public class FineDAO implements IFine {
     }
 
     public List<Fine> getFinesByStatus(String statusName) throws SQLException {
-        String sql = "SELECT fine_id, borrowed_id, amount, issue_date, status FROM fine WHERE LOWER(status) = LOWER(?)";
+        String sql = "SELECT fine_id, borrowed_id, amount, issued_date, status FROM fine WHERE LOWER(status) = LOWER(?)";
         List<Fine> list = new ArrayList<>();
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -95,7 +95,7 @@ public class FineDAO implements IFine {
     }
 
     public List<Fine> getFinesIssuedBetween(LocalDate start, LocalDate end) throws SQLException {
-        String sql = "SELECT fine_id, borrowed_id, amount, issue_date, status FROM fine WHERE issue_date BETWEEN ? AND ?";
+        String sql = "SELECT fine_id, borrowed_id, amount, issued_date, status FROM fine WHERE issued_date BETWEEN ? AND ?";
         List<Fine> list = new ArrayList<>();
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -112,7 +112,7 @@ public class FineDAO implements IFine {
     @Override
     public List<Fine> getFinesByMemberId(int memberId) throws SQLException {
         String sql = """
-                SELECT f.fine_id, f.borrowed_id, f.amount, f.issue_date, f.status
+                SELECT f.fine_id, f.borrowed_id, f.amount, f.issued_date, f.status
                 FROM fine f
                 JOIN borrowed b ON f.borrowed_id = b.borrowed_id
                 WHERE b.member_id = ?
@@ -150,7 +150,7 @@ public class FineDAO implements IFine {
                 rs.getInt("fine_id"),
                 rs.getInt("borrowed_id"),
                 rs.getDouble("amount"),
-                rs.getDate("issue_date").toLocalDate(),
+                rs.getDate("issued_date").toLocalDate(),
                 FineStatus.valueOf(rs.getString("status")));
     }
 

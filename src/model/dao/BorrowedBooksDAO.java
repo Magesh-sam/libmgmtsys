@@ -26,13 +26,12 @@ public class BorrowedBooksDAO implements IBorrowedBooks {
             pstmt.setDate(4, Date.valueOf(borrowed.getDueDate()));
             pstmt.setDate(5, borrowed.getReturnDate() != null ? Date.valueOf(borrowed.getReturnDate()) : null);
             pstmt.executeUpdate();
-
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next())
                     return rs.getInt(1);
-                throw new SQLException("Creating borrowed record failed, no ID obtained.");
             }
         }
+        return -1;
     }
 
     @Override

@@ -16,6 +16,10 @@ public class Publisher {
         this.name = name;
     }
 
+    public Publisher(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
     public Publisher(String name) {
         this.name = name;
     }

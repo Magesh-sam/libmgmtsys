@@ -9,6 +9,10 @@ public class Member extends AppUser {
     public Member() {
     }
 
+    public Member(LocalDate joinDate) {
+        this.joinDate = joinDate;
+    }
+
     public Member(int memberId) {
         this.memberId = memberId;
     }
@@ -38,5 +42,7 @@ public class Member extends AppUser {
     public String toString() {
         return super.toString() + "Member [memberId=" + memberId + ", joinDate=" + joinDate + "]";
     }
+
+
 
 }

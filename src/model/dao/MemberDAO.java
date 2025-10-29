@@ -31,7 +31,18 @@ public class MemberDAO implements IMember {
 
     @Override
     public Member getMemberById(int memberId) throws SQLException {
-        String sql = "SELECT member_id, join_date FROM member WHERE member_id = ?";
+        String sql = """
+                SELECT
+                    m.member_id,
+                    m.join_date,
+                    u.name,
+                    u.email,
+                    u.phone,
+                    u.address
+                FROM member m
+                JOIN app_user u ON m.member_id = u.user_id
+                wHERE m.member_id = ?
+                """;
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, memberId);
@@ -45,7 +56,18 @@ public class MemberDAO implements IMember {
 
     @Override
     public List<Member> getAllMembers() throws SQLException {
-        String sql = "SELECT member_id, join_date FROM member ORDER BY member_id";
+        String sql = """
+                SELECT
+                    m.member_id,
+                    m.join_date,
+                    u.name,
+                    u.email,
+                    u.phone,
+                    u.address
+                FROM member m
+                JOIN app_user u ON m.member_id = u.user_id
+                """;
+
         List<Member> list = new ArrayList<>();
         try (Connection conn = DBConfig.getConnection();
                 Statement stmt = conn.createStatement();
@@ -105,9 +127,13 @@ public class MemberDAO implements IMember {
     }
 
     private Member map(ResultSet rs) throws SQLException {
-        Member m = new Member();
-        m.setMemberId(rs.getInt("member_id"));
-        m.setJoinDate(rs.getDate("join_date").toLocalDate());
-        return m;
+        Member member = new Member();
+        member.setMemberId(rs.getInt("member_id"));
+        member.setName(rs.getString("name"));
+        member.setEmail(rs.getString("email"));
+        member.setPhone(rs.getLong("phone"));
+        member.setAddress(rs.getString("address"));
+        member.setJoinDate(rs.getDate("join_date").toLocalDate());
+        return member;
     }
 }

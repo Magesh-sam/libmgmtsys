@@ -1,11 +1,10 @@
 package src.view;
 
-import src.model.pojo.Publisher;
-import src.service.PublisherService;
 import src.controller.PublisherController;
+import src.model.pojo.Publisher;
 import src.utils.InputUtil;
+
 import java.util.List;
-import java.util.Scanner;
 
 public class PublisherView {
 
@@ -16,7 +15,7 @@ public class PublisherView {
     }
 
     public void display() {
-        int choice;
+        int choice = -1;
 
         while (true) {
             System.out.println("\n===== Publisher Management =====");
@@ -39,7 +38,7 @@ public class PublisherView {
                     System.out.println("Exiting Publisher Management...");
                     return;
                 }
-                default -> System.out.println("Invalid choice! Enter between 1–6.");
+                default -> System.out.println("Invalid choice! Enter between 1 to 6.");
             }
         }
     }
@@ -47,16 +46,17 @@ public class PublisherView {
     private void addPublisher() {
         System.out.println("\n--- Add New Publisher ---");
         System.out.print("Enter Publisher Name: ");
-        String name = sc.nextLine().trim();
-        System.out.print("Enter Address: ");
-        String address = sc.nextLine().trim();
-        System.out.print("Enter Contact Number: ");
-        String contact = sc.nextLine().trim();
+        String name = InputUtil.getStringInput();
 
-        Publisher publisher = new Publisher(name, address, contact);
-        boolean success = publisherService.addPublisher(publisher);
+        System.out.print("Enter Publisher Address: (optional) ");
+        String address = InputUtil.readRawString();
 
-        if (success) {
+        address = address.isEmpty() ? null : address;
+        Publisher publisher = new Publisher(name, address);
+
+        int publisherId = publisherController.createPublisher(publisher);
+
+        if (publisherId > 0) {
             System.out.println("Publisher added successfully!");
         } else {
             System.out.println("Failed to add publisher. Please try again.");
@@ -65,10 +65,10 @@ public class PublisherView {
 
     private void viewAllPublishers() {
         System.out.println("\n--- Publisher List ---");
-        List<Publisher> publishers = publisherService.getAllPublishers();
+        List<Publisher> publishers = publisherController.getAllPublishers();
 
-        if (publishers.isEmpty()) {
-            System.out.println("No publishers found in the system.");
+        if (publishers == null || publishers.isEmpty()) {
+            System.out.println("No publishers found.");
             return;
         }
 
@@ -79,58 +79,43 @@ public class PublisherView {
 
     private void updatePublisher() {
         System.out.println("\n--- Update Publisher ---");
+        viewAllPublishers();
         System.out.print("Enter Publisher ID to update: ");
-        String idInput = sc.nextLine().trim();
+        int publisherId = InputUtil.getIntInput();
 
-        if (!idInput.matches("\\d+")) {
-            System.out.println("Invalid ID! Please enter a valid number.");
-            return;
-        }
-
-        int publisherId = Integer.parseInt(idInput);
-
-        Publisher existing = publisherService.getPublisherById(publisherId);
+        Publisher existing = publisherController.getPublisherById(publisherId);
         if (existing == null) {
             System.out.println("Publisher not found!");
             return;
         }
 
-        System.out.print("Enter new Name (" + existing.getName() + "): ");
-        String name = sc.nextLine().trim();
-        System.out.print("Enter new Address (" + existing.getAddress() + "): ");
-        String address = sc.nextLine().trim();
-        System.out.print("Enter new Contact (" + existing.getContactNumber() + "): ");
-        String contact = sc.nextLine().trim();
+        System.out.println("Press Enter to leave a field unchanged.");
+        System.out.print("Enter New Name: ");
+        String name = InputUtil.readRawString();
+        System.out.print("Enter New Address: ");
+        String address = InputUtil.readRawString();
 
         if (!name.isEmpty())
             existing.setName(name);
         if (!address.isEmpty())
             existing.setAddress(address);
-        if (!contact.isEmpty())
-            existing.setContactNumber(contact);
 
-        boolean success = publisherService.updatePublisher(existing);
+        boolean success = publisherController.updatePublisher(existing);
 
         if (success) {
             System.out.println("Publisher updated successfully!");
         } else {
-            System.out.println("Update failed!");
+            System.out.println("Failed to update publisher.");
         }
     }
 
     private void deletePublisher() {
         System.out.println("\n--- Delete Publisher ---");
+        viewAllPublishers();
         System.out.print("Enter Publisher ID to delete: ");
-        String idInput = sc.nextLine().trim();
+        int publisherId = InputUtil.getIntInput();
 
-        if (!idInput.matches("\\d+")) {
-            System.out.println("Invalid ID! Please enter a valid number.");
-            return;
-        }
-
-        int publisherId = Integer.parseInt(idInput);
-
-        boolean success = publisherService.deletePublisher(publisherId);
+        boolean success = publisherController.deletePublisher(publisherId);
 
         if (success) {
             System.out.println("Publisher deleted successfully!");
@@ -141,18 +126,15 @@ public class PublisherView {
 
     private void searchPublisherByName() {
         System.out.println("\n--- Search Publisher ---");
-        System.out.print("Enter publisher name keyword: ");
-        String keyword = sc.nextLine().trim();
+        System.out.print("Enter Publisher Name: ");
+        String name = InputUtil.getStringInput();
 
-        List<Publisher> results = publisherService.searchPublisherByName(keyword);
+        Publisher publisher = publisherController.getPublisherByName(name);
 
-        if (results.isEmpty()) {
-            System.out.println("No publishers found matching \"" + keyword + "\".");
-            return;
-        }
-
-        for (Publisher p : results) {
-            System.out.println(p);
+        if (publisher == null) {
+            System.out.println("No publisher found with name \"" + name + "\".");
+        } else {
+            System.out.println(publisher);
         }
     }
 }
