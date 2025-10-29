@@ -11,6 +11,7 @@ public class LibrarianUserView {
             System.out.println("1. Manage Books");
             System.out.println("2. Manage Book Copies");
             System.out.println("3. Manage Authors");
+            System.out.println("4. Manage BookAuthors");
             System.out.println("4. Manage Categories");
             System.out.println("5. Manage Publishers");
             System.out.println("6. Manage Borrowings");
