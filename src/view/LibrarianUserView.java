@@ -23,7 +23,7 @@ public class LibrarianUserView {
 
             switch (choice) {
                 case 1 -> new BookView().display();
-                case 2 -> System.out.println("===Book Copies Management===");
+                case 2 -> new BookCopyView().display();
                 case 3 -> new AuthorView().display();
                 case 4 -> new CategoryView().display();
                 case 5 -> managePublishers();

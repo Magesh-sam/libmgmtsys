@@ -13,7 +13,7 @@ public class BookCopyDAO implements IBookCopy {
 
     @Override
     public int createBookCopy(BookCopy copy) throws SQLException {
-        String sql = "INSERT INTO book_copy (book_id, status) VALUES (?, ?)";
+        String sql = "INSERT INTO book_copy (book_id, status) VALUES (?, ?::copy_status)";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pst.setInt(1, copy.getBookId());
@@ -73,12 +73,38 @@ public class BookCopyDAO implements IBookCopy {
     }
 
     @Override
+    public List<BookCopy> getAllBookCopies() throws SQLException {
+        String sql = "SELECT copy_id, book_id, status FROM book_copy";
+        List<BookCopy> list = new ArrayList<>();
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next())
+                    list.add(map(rs));
+            }
+        }
+        return list;
+    }
+
+    @Override
     public boolean updateBookCopyStatus(int copyId, BookStatus status) throws SQLException {
-        String sql = "UPDATE book_copy SET status = ? WHERE copy_id = ?";
+        String sql = "UPDATE book_copy SET status = ?::copy_status WHERE copy_id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, status.name());
             pst.setInt(2, copyId);
+            return pst.executeUpdate() > 0;
+        }
+    }
+
+    @Override
+    public boolean updateBookCopy(BookCopy copy) throws SQLException {
+        String sql = "UPDATE book_copy SET book_id = ?, status = ?::copy_status WHERE copy_id = ?";
+        try (Connection conn = DBConfig.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, copy.getBookId());
+            pst.setString(2, copy.getStatus().name());
+            pst.setInt(3, copy.getCopyId());
             return pst.executeUpdate() > 0;
         }
     }

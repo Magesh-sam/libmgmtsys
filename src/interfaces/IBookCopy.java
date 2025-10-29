@@ -34,4 +34,8 @@ public interface IBookCopy {
 
     boolean copyExists(int copyId) throws SQLException;
 
+    boolean updateBookCopy(BookCopy copy) throws SQLException;
+
+    List<BookCopy> getAllBookCopies() throws SQLException;
+
 }

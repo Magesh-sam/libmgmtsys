@@ -100,7 +100,31 @@ public class BookCopyService implements IBookCopy {
 
     @Override
     public boolean copyExists(int copyId) throws SQLException {
+        if (copyId <= 0) {
+            throw new IllegalArgumentException("copyId cannot be empty or negative");
+        }
         return bookCopyDAO.copyExists(copyId);
+    }
+
+    @Override
+    public boolean updateBookCopy(BookCopy copy) throws SQLException {
+        Objects.requireNonNull(copy, " copy cannot be null ");
+        if (copy.getCopyId() <= 0) {
+            throw new IllegalArgumentException("copyId cannot be empty or negative");
+        }
+        if (copy.getBookId() <= 0) {
+            throw new IllegalArgumentException("bookId cannot be empty or negative");
+        }
+        if (!bookDAO.bookExists(copy.getBookId())) {
+            throw new IllegalArgumentException("Referenced book does not exist.");
+        }
+        return bookCopyDAO.updateBookCopy(copy);
+
+    }
+
+    @Override
+    public List<BookCopy> getAllBookCopies() throws SQLException {
+        return bookCopyDAO.getAllBookCopies();
     }
 
 }

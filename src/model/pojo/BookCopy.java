@@ -2,13 +2,27 @@ package src.model.pojo;
 
 public class BookCopy {
 
-    public static enum BookStatus {
+    public enum BookStatus {
         available, borrowed, lost
     }
 
     private int copyId;
     private int bookId;
     private BookStatus status;
+
+    public BookCopy(int copyId, int bookId, BookStatus status) {
+        this.copyId = copyId;
+        this.bookId = bookId;
+        this.status = status;
+    }
+
+    public BookCopy() {
+    }
+
+    public BookCopy(int bookId, BookStatus status) {
+        this.bookId = bookId;
+        this.status = status;
+    }
 
     public int getCopyId() {
         return copyId;
