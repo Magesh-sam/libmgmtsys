@@ -1,5 +1,5 @@
 -- =====================================
--- Drop ENUM types (no longer required)
+-- Drop ENUM types 
 -- =====================================
 DROP TYPE IF EXISTS copy_status;
 DROP TYPE IF EXISTS fine_status;

@@ -18,7 +18,7 @@ public class BookAuthorService implements IBookAuthor {
     }
 
     @Override
-    public void addBookAuthor(BookAuthor bookAuthor) throws SQLException {
+    public boolean addBookAuthor(BookAuthor bookAuthor) throws SQLException {
         Objects.requireNonNull(bookAuthor, " bookAuthor cannot be null ");
         if (bookAuthor.getAuthorId() <= 0) {
             throw new IllegalArgumentException("authorId cannot be empty or negative");
@@ -29,7 +29,7 @@ public class BookAuthorService implements IBookAuthor {
         if (bookAuthorDAO.bookAuthorExists(bookAuthor.getBookId(), bookAuthor.getAuthorId())) {
             throw new IllegalArgumentException("Mapping already exists");
         }
-        bookAuthorDAO.addBookAuthor(bookAuthor);
+        return bookAuthorDAO.addBookAuthor(bookAuthor);
     }
 
     @Override
@@ -74,6 +74,11 @@ public class BookAuthorService implements IBookAuthor {
     @Override
     public boolean bookAuthorExists(int bookId, int authorId) throws SQLException {
         return bookAuthorDAO.bookAuthorExists(bookId, authorId);
+    }
+
+    @Override
+    public List<BookAuthor> getAllBookAuthors() throws SQLException {
+        return bookAuthorDAO.getAllBookAuthors();
     }
 
 }

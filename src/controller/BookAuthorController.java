@@ -4,10 +4,11 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
+import src.interfaces.IBookAuthor;
 import src.model.pojo.BookAuthor;
 import src.service.BookAuthorService;
 
-public class BookAuthorController {
+public class BookAuthorController implements IBookAuthor {
 
     private final BookAuthorService bookAuthorService;
 
@@ -15,12 +16,13 @@ public class BookAuthorController {
         this.bookAuthorService = new BookAuthorService();
     }
 
-    public void addBookAuthor(BookAuthor bookAuthor) {
+    public boolean addBookAuthor(BookAuthor bookAuthor) {
         try {
-            bookAuthorService.addBookAuthor(bookAuthor);
+            return bookAuthorService.addBookAuthor(bookAuthor);
         } catch (SQLException | IllegalArgumentException e) {
             System.err.println("Error adding book-author mapping: " + e.getMessage());
         }
+        return false;
     }
 
     public List<BookAuthor> getAuthorsByBookId(int bookId) {
@@ -65,6 +67,16 @@ public class BookAuthorController {
         } catch (SQLException e) {
             System.err.println("Error checking mapping existence: " + e.getMessage());
             return false;
+        }
+    }
+
+    @Override
+    public List<BookAuthor> getAllBookAuthors() {
+        try {
+            return bookAuthorService.getAllBookAuthors();
+        } catch (SQLException e) {
+            System.err.println("Error fetching all book-author mappings: " + e.getMessage());
+            return Collections.emptyList();
         }
     }
 }

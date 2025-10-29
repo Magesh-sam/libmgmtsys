@@ -7,7 +7,7 @@ import src.model.pojo.BookAuthor;
 
 public interface IBookAuthor {
 
-    void addBookAuthor(BookAuthor bookAuthor) throws SQLException;
+    boolean addBookAuthor(BookAuthor bookAuthor) throws SQLException;
 
     List<BookAuthor> getAuthorsByBookId(int bookId) throws SQLException;
 
@@ -18,5 +18,7 @@ public interface IBookAuthor {
     boolean updateBookAuthor(int oldBookId, int oldAuthorId, int newBookId, int newAuthorId) throws SQLException;
 
     boolean bookAuthorExists(int bookId, int authorId) throws SQLException;
+
+    List<BookAuthor> getAllBookAuthors() throws SQLException;
 
 }

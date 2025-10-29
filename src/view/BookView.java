@@ -70,7 +70,7 @@ public class BookView {
         double price = InputUtil.getDoubleInput();
 
         Book b = new Book(title, language, price);
-        
+
         b.setPublisherId(publisherId);
         b.setCategoryId(categoryId);
         int bookId = bookController.createBook(b);

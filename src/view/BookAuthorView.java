@@ -63,7 +63,7 @@ public class BookAuthorView {
         int authorId = InputUtil.getIntInput();
 
         BookAuthor link = new BookAuthor(bookId, authorId);
-        boolean success = bookAuthorController.createBookAuthor(link);
+        boolean success = bookAuthorController.addBookAuthor(link);
 
         if (success) {
             System.out.println("Book linked with author successfully!");
@@ -110,7 +110,7 @@ public class BookAuthorView {
         System.out.print("Enter Book ID: ");
         int bookId = InputUtil.getIntInput();
 
-        List<Author> authors = bookAuthorController.getAuthorsByBookId(bookId);
+        List<BookAuthor> authors = bookAuthorController.getAuthorsByBookId(bookId);
 
         if (authors.isEmpty()) {
             System.out.println("No authors found for Book ID " + bookId + ".");
@@ -118,7 +118,7 @@ public class BookAuthorView {
         }
 
         System.out.println("Authors for Book ID " + bookId + ":");
-        for (Author a : authors) {
+        for (BookAuthor a : authors) {
             System.out.println(a);
         }
     }
@@ -128,7 +128,7 @@ public class BookAuthorView {
         System.out.print("Enter Author ID: ");
         int authorId = InputUtil.getIntInput();
 
-        List<Book> books = bookAuthorController.getBooksByAuthorId(authorId);
+        List<BookAuthor> books = bookAuthorController.getBooksByAuthorId(authorId);
 
         if (books.isEmpty()) {
             System.out.println("No books found for Author ID " + authorId + ".");
@@ -136,7 +136,7 @@ public class BookAuthorView {
         }
 
         System.out.println("Books for Author ID " + authorId + ":");
-        for (Book b : books) {
+        for (BookAuthor b : books) {
             System.out.println(b);
         }
     }

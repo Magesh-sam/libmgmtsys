@@ -11,13 +11,14 @@ import src.utils.DBConfig;
 public class BookAuthorDAO implements IBookAuthor {
 
     @Override
-    public void addBookAuthor(BookAuthor ba) throws SQLException {
+    public boolean addBookAuthor(BookAuthor ba) throws SQLException {
         String sql = "INSERT INTO book_author (book_id, author_id) VALUES (?, ?)";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, ba.getBookId());
             pst.setInt(2, ba.getAuthorId());
             pst.executeUpdate();
+            return true;
         }
     }
 
@@ -107,6 +108,7 @@ public class BookAuthorDAO implements IBookAuthor {
         }
     }
 
+    @Override
     public List<BookAuthor> getAllBookAuthors() throws SQLException {
         String sql = "SELECT book_id, author_id FROM book_author ORDER BY book_id, author_id";
         List<BookAuthor> list = new ArrayList<>();

@@ -1,6 +1,5 @@
 package src.view;
 
-import src.controller.BookController;
 import src.utils.InputUtil;
 
 public class LibrarianUserView {
@@ -11,13 +10,13 @@ public class LibrarianUserView {
             System.out.println("1. Manage Books");
             System.out.println("2. Manage Book Copies");
             System.out.println("3. Manage Authors");
-            System.out.println("4. Manage BookAuthors");
             System.out.println("4. Manage Categories");
             System.out.println("5. Manage Publishers");
             System.out.println("6. Manage Borrowings");
             System.out.println("7. Manage Fines");
             System.out.println("8. Manage Members");
-            System.out.println("9. Logout");
+            System.out.println("9. Manage BookAuhtor Links");
+            System.out.println("10. Logout");
             System.out.print("Enter your choice: ");
 
             int choice = InputUtil.getIntInput();
@@ -31,23 +30,14 @@ public class LibrarianUserView {
                 case 6 -> manageBorrowings();
                 case 7 -> manageFines();
                 case 8 -> manageMembers();
-                case 9 -> {
+                case 9 -> new BookAuthorView().display();
+                case 10 -> {
                     System.out.println("Logging out...");
                     return;
                 }
                 default -> System.out.println("Invalid choice. Try again.");
             }
         }
-    }
-
-    private void manageAuthors() {
-        System.out.println("===Author Management===");
-
-    }
-
-    private void manageCategories() {
-        System.out.println("===Category Management===");
-
     }
 
     private void managePublishers() {
