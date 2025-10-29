@@ -43,12 +43,19 @@ public class MainView {
 
     private void registerUser() {
         System.out.println("\n--- Register ---");
+        System.out.println("Press enter to skip optional fields");
         System.out.print("Enter name: ");
         String name = InputUtil.getStringInput();
         System.out.print("Enter email: ");
         String email = InputUtil.getStringInput();
         System.out.print("Enter password: ");
         String password = InputUtil.getStringInput();
+        System.out.print("Enter address: (optional) ");
+        String address = InputUtil.readRawString();
+        System.out.print("Enter phone: ");
+        long phone = InputUtil.getLongInput();
+
+        address = address.isEmpty() ? null : address;
 
         UserRole role = new UserRoleController().getUserRoleByName("member");
 
@@ -56,6 +63,8 @@ public class MainView {
         user.setName(name);
         user.setEmail(email);
         user.setPassword(password);
+        user.setAddress(address);
+        user.setPhone(phone);
         int userId = userController.createUser(user, role.getRoleId());
 
         if (userId > 0) {

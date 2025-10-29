@@ -46,7 +46,8 @@ public class MemberUserView {
             System.out.println("8. Search Book by Publisher");
             System.out.println("9. Borrow Book");
             System.out.println("10. Return Book");
-            System.out.println("11. Log Out");
+            System.out.println("11. View Profile");
+            System.out.println("12. Log Out");
             System.out.print("Enter your choice: ");
 
             choice = InputUtil.getIntInput();
@@ -62,7 +63,8 @@ public class MemberUserView {
                 case 8 -> searchBookByPublisher();
                 case 9 -> borrowBook();
                 case 10 -> returnBook();
-                case 11 -> {
+                case 11 -> System.out.println(currentUser);
+                case 12 -> {
                     System.out.println("Logging out...");
                     return;
                 }
@@ -196,4 +198,5 @@ public class MemberUserView {
             System.out.println(bc);
         }
     }
+
 }
