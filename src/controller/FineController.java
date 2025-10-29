@@ -4,11 +4,12 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
+import src.interfaces.IFine;
 import src.model.pojo.Fine;
 import src.model.pojo.Fine.FineStatus;
 import src.service.FineService;
 
-public class FineController {
+public class FineController implements IFine {
 
     private final FineService fineService;
 
@@ -58,6 +59,26 @@ public class FineController {
         } catch (SQLException | IllegalArgumentException e) {
             System.err.println("Error deleting fine: " + e.getMessage());
             return false;
+        }
+    }
+
+    @Override
+    public List<Fine> getFinesByMemberId(int memberId) {
+        try {
+            return fineService.getFinesByMemberId(memberId);
+        } catch (SQLException | IllegalArgumentException e) {
+            System.err.println("Error fetching fine: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public List<Fine> getUnpaidFines() throws SQLException {
+        try {
+            return fineService.getUnpaidFines();
+        } catch (SQLException | IllegalArgumentException e) {
+            System.err.println("Error fetching unpaid fines: " + e.getMessage());
+            return null;
         }
     }
 }

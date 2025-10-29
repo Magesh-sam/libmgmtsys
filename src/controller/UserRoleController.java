@@ -4,10 +4,11 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
+import src.interfaces.IUserRole;
 import src.model.pojo.UserRole;
 import src.service.UserRoleService;
 
-public class UserRoleController {
+public class UserRoleController implements IUserRole {
 
     private final UserRoleService userRoleService;
 

@@ -1,6 +1,5 @@
 package src.view;
 
-import src.App;
 import src.controller.AppUserController;
 import src.controller.MemberController;
 import src.controller.UserRoleController;
@@ -10,9 +9,7 @@ import src.model.pojo.UserRole;
 import src.utils.InputUtil;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MemberView {
 
@@ -66,6 +63,9 @@ public class MemberView {
         System.out.print("Enter address: (optional) ");
         String address = InputUtil.readRawString();
 
+        System.out.print("Enter phone:  ");
+        long phone = InputUtil.getLongInput();
+
         address = address.isEmpty() ? null : address;
         LocalDate joinDate = LocalDate.now();
 
@@ -77,8 +77,7 @@ public class MemberView {
         user.setPassword(password);
         user.setAddress(address);
         user.setRoleId(role.getRoleId());
-        user.setRoleId(role.getRoleId());
-
+        user.setPhone(phone);
         int userId = userController.createUser(user, role.getRoleId());
 
         if (userId > 0) {
@@ -135,7 +134,7 @@ public class MemberView {
             return;
         }
 
-        System.out.println("Press Enter to skip a field.");
+        System.out.println("Press Enter/0 to skip a field.");
 
         System.out.print("Enter Member Name (" + existingUser.getName() + "): ");
         String name = InputUtil.readRawString();
@@ -146,6 +145,9 @@ public class MemberView {
         System.out.print("Enter Address (" + existingUser.getAddress() + "): ");
         String address = InputUtil.readRawString();
 
+        System.out.print("Enter Phone (" + existingUser.getPhone() + "): ");
+        long phone = InputUtil.getLongInput();
+
         System.out.print("Enter new Password (leave blank to keep existing): ");
         String password = InputUtil.readRawString();
 
@@ -153,12 +155,13 @@ public class MemberView {
         email = email.isEmpty() ? existingUser.getEmail() : email;
         password = password.isEmpty() ? existingUser.getPassword() : password;
         address = address.isEmpty() ? existingUser.getAddress() : address;
-
+        phone = phone <= 0 ? existingUser.getPhone() : phone;
         // Update AppUser entity
         existingUser.setName(name);
         existingUser.setEmail(email);
         existingUser.setPassword(password);
         existingUser.setAddress(address);
+        existingUser.setPhone(phone);
 
         // Persist both updates
         boolean userUpdated = userController.updateUser(existingUser);
@@ -207,18 +210,6 @@ public class MemberView {
                     member.getEmail(),
                     member.getAddress(),
                     member.getJoinDate());
-        }
-    }
-
-    private void printAllUsers() {
-        List<AppUser> users = userController.getAllUsers();
-        if (users == null || users.isEmpty()) {
-            System.out.println("No users found.");
-            return;
-
-        }
-        for (AppUser user : users) {
-            System.out.println(user);
         }
     }
 

@@ -17,17 +17,15 @@ public class LibrarianController implements ILibrarian {
     @Override
     public int createLibrarian(int librarianId, Librarian librarian) {
         try {
-         
+
             if (librarian == null) {
                 throw new IllegalArgumentException("Librarian data cannot be null.");
             }
             return librarianService.createLibrarian(librarianId, librarian);
-        } 
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Validation Error: " + e.getMessage());
             return -1;
-        } 
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Error creating librarian: " + e.getMessage());
             e.printStackTrace();
             return -1;
@@ -41,12 +39,10 @@ public class LibrarianController implements ILibrarian {
                 throw new IllegalArgumentException("Invalid librarian ID.");
             }
             return librarianService.getLibrarianById(librarianId);
-        } 
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Validation Error: " + e.getMessage());
             return null;
-        } 
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Error fetching librarian by ID: " + e.getMessage());
             e.printStackTrace();
             return null;
@@ -57,12 +53,10 @@ public class LibrarianController implements ILibrarian {
     public List<Librarian> getAllLibrarians() {
         try {
             return librarianService.getAllLibrarians();
-        } 
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Validation Error: " + e.getMessage());
             return null;
-        } 
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Error fetching all librarians: " + e.getMessage());
             e.printStackTrace();
             return null;
@@ -76,12 +70,10 @@ public class LibrarianController implements ILibrarian {
                 throw new IllegalArgumentException("Librarian object cannot be null.");
             }
             return librarianService.updateLibrarian(librarian);
-        } 
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Validation Error: " + e.getMessage());
             return false;
-        } 
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Error updating librarian: " + e.getMessage());
             e.printStackTrace();
             return false;
@@ -95,14 +87,22 @@ public class LibrarianController implements ILibrarian {
                 throw new IllegalArgumentException("Invalid librarian ID.");
             }
             return librarianService.deleteLibrarian(librarianId);
-        } 
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Validation Error: " + e.getMessage());
             return false;
-        } 
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Error deleting librarian: " + e.getMessage());
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean librarianExists(int librarianId) {
+        try {
+            return getLibrarianById(librarianId) != null;
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid librarian id: " + librarianId);
             return false;
         }
     }

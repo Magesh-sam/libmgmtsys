@@ -4,10 +4,11 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
+import src.interfaces.IAuthor;
 import src.model.pojo.Author;
 import src.service.AuthorService;
 
-public class AuthorController {
+public class AuthorController implements IAuthor {
 
     private final AuthorService authorService;
 

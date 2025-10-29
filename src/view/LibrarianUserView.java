@@ -4,7 +4,7 @@ import src.utils.InputUtil;
 
 public class LibrarianUserView {
 
-    public void displayLibrarianMenu() {
+    public void display() {
         while (true) {
             System.out.println("\n===== Librarian Menu =====");
             System.out.println("1. Manage Books");

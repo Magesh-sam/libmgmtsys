@@ -34,7 +34,7 @@ public class Validation {
 
         Pattern p = Pattern.compile(mobileNoRegex);
 
-        return p.matcher(mobileNoRegex).matches();
+        return p.matcher(mobileNo).matches();
     }
 
     public static void validateEmail(String email) {

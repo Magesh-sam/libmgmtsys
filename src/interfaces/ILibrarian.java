@@ -17,4 +17,6 @@ public interface ILibrarian {
 
     boolean deleteLibrarian(int librarianId) throws SQLException;
 
+    boolean librarianExists(int librarianId) throws SQLException;
+
 }

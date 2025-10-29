@@ -154,7 +154,7 @@ public class MemberUserView {
     // 9. Borrow Book
     private void borrowBook() {
         viewAllBookCopies();
-        System.out.print("Enter Book ID to borrow: ");
+        System.out.print("Enter Book Copy ID to borrow: ");
         int bookId = InputUtil.getIntInput();
 
         BorrowedBooks borrowed = new BorrowedBooks();

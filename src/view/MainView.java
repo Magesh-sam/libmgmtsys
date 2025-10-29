@@ -89,8 +89,8 @@ public class MainView {
 
         switch (role.getName().toLowerCase()) {
             // case "admin" -> new AdminView(user).showMenu();
-            case "admin" -> System.out.println("Admin menu");
-            case "librarian" -> new LibrarianUserView().displayLibrarianMenu();
+            case "admin" -> new AdminUserView().display();
+            case "librarian" -> new LibrarianUserView().display();
             case "member" -> new MemberUserView(user).display();
             // case "member" -> new MemberView(user).showMenu();
             default -> System.out.println("Unknown role.");
