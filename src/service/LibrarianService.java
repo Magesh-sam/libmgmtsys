@@ -73,4 +73,12 @@ public class LibrarianService implements ILibrarian {
         return ((LibrarianDAO) librarianDAO).getLibrariansHiredBetween(start, end);
     }
 
+    @Override
+    public boolean librarianExists(int librarianId) throws SQLException {
+        if (librarianId <= 0) {
+            throw new IllegalArgumentException("Invalid Librarian id: " + librarianId);
+        }
+        return getLibrarianById(librarianId) != null;
+    }
+
 }
